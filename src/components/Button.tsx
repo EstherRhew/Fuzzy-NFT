@@ -1,9 +1,12 @@
 import React from 'react';
 
-const Button = ({onClick, text}: {onClick: () => void, text: string}) => {
+const Button = ({onClick, text, icon}: {onClick: () => void, text: string, icon?: any}) => {
   return (
     <button className={`btn ${text}`} onClick={onClick}>
-      {text}
+      {icon
+        ? <img src={icon} alt="icon"/>
+        : text
+      }
     </button>
   );
 };

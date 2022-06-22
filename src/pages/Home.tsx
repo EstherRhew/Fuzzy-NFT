@@ -9,6 +9,7 @@ import {IItem} from "../type/type";
 import {klaytn} from "../klaytn/caver";
 import {accountAtom} from "../recoil/account";
 import {uploadIpfs} from "../ipfs/ipfs";
+import addIcon from '../assets/image/plus-solid.svg'
 
 const Home = () => {
   const [list, setList] = useState<IItem[]>([])
@@ -32,8 +33,7 @@ const Home = () => {
 
   return (
     <main className="home">
-      <Button onClick={onClickAdd} text='Add'/>
-
+      <Button onClick={onClickAdd} text='Add' icon={addIcon}/>
       <ListLayout list={list} />
       {modal && <AddForm /> }
     </main>
