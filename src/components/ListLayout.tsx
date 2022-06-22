@@ -4,7 +4,7 @@ import {IItem} from "../type/type";
 
 const ListLayout = ({list}: {list: IItem[]}) => {
   return (
-    <ul>
+    <ul className="feed_list">
       {list.map(item =>
       <Card item={item}/>
       )}

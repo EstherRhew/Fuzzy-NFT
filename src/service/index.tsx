@@ -4,14 +4,25 @@ import {uploadIpfs} from "../ipfs/ipfs";
 
 export const getAllList = async () => {
   const totalCount = await GalleryContract.methods.getTotalPhotoCount().call();
+  console.log(totalCount, 'totla')
   const list: IItem[] = []
   if (totalCount === 0) {
     return list
   }
-  for (let i = 0; i < totalCount; i++) {
-    const item = await GalleryContract.methods.getPhoto(i).call();
+  for (let i = 1; i <= totalCount; i++) {
+    const res = await GalleryContract.methods.getPhoto(i).call();
+    const item = {
+      tokenId: res[0],
+      ownerHistory: res[1],
+      photo: res[2],
+      title: res[3],
+      location: res[4],
+      description: res[5],
+      timestamp: res[6]
+    }
     list.push(item)
   }
+  console.log(list, 'list')
   return Promise.all(list)
 }
 

@@ -77,11 +77,12 @@ const AddForm = () => {
     }
   }, [])
 
+
   return (
     <form className="add_form">
       <div className="form_item">
         <label htmlFor="title">Title</label>
-        <input type="text" id="title" onClick={handleInputChange}/>
+        <input type="text" id="title" onChange={handleInputChange}/>
       </div>
       <div className="form_item">
         <input type="file" accept="image/*" onChange={handleFileChange}/>
@@ -91,11 +92,11 @@ const AddForm = () => {
       </div>
       <div className="form_item">
         <label htmlFor="location">Location</label>
-        <input type="text" id="location" onClick={handleInputChange}/>
+        <input type="text" id="location" onChange={handleInputChange}/>
       </div>
       <div className="form_item">
         <label htmlFor="description">Description</label>
-        <input type="text" id="description" onClick={handleInputChange}/>
+        <input type="text" id="description" onChange={handleInputChange}/>
       </div>
       <div className="form_item">
         <button onClick={handleUpload}>Upload</button>

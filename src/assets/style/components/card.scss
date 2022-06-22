@@ -1,0 +1,66 @@
+.card {
+  background-color: $white;
+  width: 30%;
+  min-width:450px;
+  display: flex;
+  flex-direction: column;
+  border:1px solid $border-grey;
+  margin-bottom: 3em;
+  section {
+    width: 100%;
+    &.card_header {
+      display: flex;
+      align-items: center;
+      padding: 1.5em;
+      .info_img {
+        width: 10%;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        margin-right: 10px;
+        border: 1px solid $dark-brown;
+      }
+      .card_owner {
+        font-size: 0.8rem;
+        color: $dark-brown;
+      }
+    }
+    &.card_image {
+      width: 100%;
+      img {
+        width: 100%
+      }
+    }
+    &.card_footer {
+      font-size: 0.9rem;
+      position:relative;
+      padding: 1.5em;
+      .card_title {
+        font-size: 1.1rem;
+        margin-bottom: 0.5em;
+        color: $dark-brown;
+      }
+      .card_description {
+        margin-bottom: 1em;
+        color: $brownish-grey
+      }
+      .card_time {
+        color: $brown-grey;
+        font-size: 0.8rem;
+      }
+      .card_info {
+        position:absolute;
+        top: 1.5em;
+        right: 1.5em;
+        display: flex;
+        .icon {
+          width: 15px;
+          height: 15px;
+          margin-left: 20px;
+          //color: $brown-grey;
+        }
+      }
+
+    }
+  }
+
+}

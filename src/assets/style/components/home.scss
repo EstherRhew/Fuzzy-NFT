@@ -1,0 +1,21 @@
+
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position:relative;
+  overflow: auto;
+  .feed_list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5em;
+
+  }
+  .btn.Add {
+    position:absolute;
+    bottom: 0px;
+    right: 0px;
+  }
+}

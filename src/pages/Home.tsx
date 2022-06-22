@@ -19,11 +19,6 @@ const Home = () => {
     setModal(!modal)
   }
 
-  const onLogin = async () => {
-    const accounts = await klaytn.enable()
-    const account = accounts[0]
-    setAccount(account)
-  }
 
   useEffect(() => {
     getAllList()
@@ -38,7 +33,7 @@ const Home = () => {
   return (
     <main className="home">
       <Button onClick={onClickAdd} text='Add'/>
-      <Button onClick={onLogin} text='Login'/>
+
       <ListLayout list={list} />
       {modal && <AddForm /> }
     </main>
