@@ -1,11 +1,21 @@
 import React from 'react';
 import Card from "./Card";
-import {IItem} from "../type/type";
+import {IUploadedItem} from "../type/type";
 
-const ListLayout = ({list}: {list: IItem[]}) => {
+const ListLayout = ({list}: {list: IUploadedItem[]}) => {
+
+  const orderList = (list: IUploadedItem[]) => {
+    const updated = [...list]
+    updated.sort((itemA, itemB) => {
+      return Number(itemB.timestamp) - Number(itemA.timestamp)
+    })
+    console.log(updated)
+    return updated
+  }
+
   return (
     <ul className="feed_list">
-      {list.map(item =>
+      {orderList(list).map((item: IUploadedItem) =>
       <Card item={item}/>
       )}
     </ul>

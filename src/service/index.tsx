@@ -1,11 +1,10 @@
 import GalleryContract from "../klaytn/contract";
-import {IItem} from "../type/type";
+import {INewItem, IUploadedItem} from "../type/type";
 import {uploadIpfs} from "../ipfs/ipfs";
 
 export const getAllList = async () => {
   const totalCount = await GalleryContract.methods.getTotalPhotoCount().call();
-  console.log(totalCount, 'totla')
-  const list: IItem[] = []
+  const list: IUploadedItem[] = []
   if (totalCount === 0) {
     return list
   }
@@ -26,7 +25,7 @@ export const getAllList = async () => {
   return Promise.all(list)
 }
 
-export const uploadPhoto = async (item: IItem, address: string) => {
+export const uploadPhoto = async (item: INewItem, address: string) => {
   const {photo, title, location, description} = item
   const reader = new window.FileReader();
   reader.readAsArrayBuffer(photo)

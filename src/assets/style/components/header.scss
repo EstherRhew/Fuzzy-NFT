@@ -6,4 +6,10 @@
   padding: 1.5em;
   //background-color: $border-grey;
   border-bottom: 1px solid $border-grey;
+  .btn.Login {
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Button = ({onClick, text, icon}: {onClick: () => void, text: string, icon?: any}) => {
+const Button = ({onClick, text, icon}: {onClick: (e?:any) => void, text: string, icon?: any}) => {
   return (
     <button className={`btn ${text}`} onClick={onClick}>
       {icon
