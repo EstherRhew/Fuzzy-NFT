@@ -18,7 +18,6 @@ const AddForm = () => {
   const [newItem, setNewItem] = useState<INewItem>({
     photo: '',
     fileName: '',
-    title:'',
     location: '',
     description: '',
   })
@@ -44,7 +43,6 @@ const AddForm = () => {
       photo: file,
       fileName: file.name,
     })
-    console.log(URL.createObjectURL(e.target.files[0]))
     setPreview(URL.createObjectURL(e.target.files[0]));
   }
 

@@ -2,13 +2,19 @@ import React, {useEffect, useState} from 'react';
 import Button from "../components/Button";
 import ListLayout from "../components/ListLayout";
 import {getAllList} from "../service";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useSetRecoilState} from "recoil";
 import {ModalAtom} from "../recoil/modal";
 import AddForm from "../components/AddForm";
 import {IUploadedItem} from "../type/type";
 import {klaytn} from "../klaytn/caver";
-import {accountAtom} from "../recoil/account";
-import {uploadIpfs} from "../ipfs/ipfs";
+import {
+  accountAtom,
+  isStorageLoggedIn,
+  onAccountsChanged,
+  onUnlockAccount,
+  storageStatusAtom,
+  walletStatusAtom
+} from "../recoil/account";
 import addIcon from '../assets/image/plus-solid.svg'
 import Modal from "../components/Modal";
 
@@ -21,15 +27,20 @@ const Home = () => {
     setModal(!modal)
   }
 
+
+
   useEffect(() => {
     getAllList()
       .then(setList)
   }, [])
 
+
+
   useEffect(() => {
     console.log(modal)
     console.log(account, 'account')
-  }, [modal, account])
+    console.log(list, 'listsssss')
+  }, [modal, account, list])
 
   return (
     <main className="home">

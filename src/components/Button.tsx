@@ -4,7 +4,7 @@ const Button = ({onClick, text, icon}: {onClick: (e?:any) => void, text: string,
   return (
     <button className={`btn ${text}`} onClick={onClick}>
       {icon
-        ? <img src={icon} alt="icon"/>
+        ? <img src={icon} alt={text}/>
         : text
       }
     </button>

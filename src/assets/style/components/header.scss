@@ -6,10 +6,23 @@
   padding: 1.5em;
   //background-color: $border-grey;
   border-bottom: 1px solid $border-grey;
-  .btn.Login {
-    img {
-      width: 20px;
-      height: 20px;
+  color: $dark-brown;
+  .header_right {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    .menu_item {
+      display: flex;
+      align-items: center;
+      margin-left: 20px;
+      cursor: pointer;
+    }
+    .btn {
+      img {
+        width: 20px;
+        height: 20px;
+      }
     }
   }
+
 }

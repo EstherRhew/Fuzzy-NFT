@@ -8,10 +8,10 @@ import {firstLetterUppercase, shortCutAddress} from "@geonil2/util-func";
 
 
 const Card = ({item}: {item: any}) => {
-  const {tokenId, ownerHistory, photo, title, location, description, timestamp} = item
+  const {tokenId, ownerHistory, photo, location, description, timestamp} = item
   const originalOwner = ownerHistory[0]
   const currentOwner = last(ownerHistory)
-  const imageUrl = drawImageFromBytes(photo)
+  const imageUrl = photo
   const issueDate = moment(timestamp * 1000).fromNow()
 
   return (

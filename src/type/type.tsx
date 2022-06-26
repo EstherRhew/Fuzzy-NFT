@@ -1,5 +1,5 @@
 interface IBaseItem {
-  title: string;
+  // title: string;
   location: string;
   description: string;
   photo: any;
