@@ -95,6 +95,14 @@ const makeNFTMetadata = (assetURI: string, options: INewItem) => {
   }
 }
 
+export const transferNft = async (tokenId: string, to: string, from: string) => {
+  console.log(tokenId, to, from, 'hhhh')
+  await GalleryContract.methods.transferOwnership(tokenId, to).send({
+    from,
+    gas: 20000000
+  })
+}
+
 // IPFS not used
 // export const uploadPhoto = async (item: INewItem, address: string) => {
 // const {photo, location, description} = item

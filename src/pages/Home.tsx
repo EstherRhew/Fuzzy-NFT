@@ -27,20 +27,14 @@ const Home = () => {
     setModal(!modal)
   }
 
-
-
   useEffect(() => {
     getAllList()
       .then(setList)
-  }, [])
-
-
+  }, [modal])
 
   useEffect(() => {
-    console.log(modal)
-    console.log(account, 'account')
     console.log(list, 'listsssss')
-  }, [modal, account, list])
+  }, [list])
 
   return (
     <main className="home">

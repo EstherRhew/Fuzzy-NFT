@@ -5,6 +5,9 @@ import moment from "moment";
 import transferIcon from '../assets/image/arrow-right-arrow-left-solid.svg'
 import copyrightIcon from '../assets/image/copyright-solid.svg'
 import {firstLetterUppercase, shortCutAddress} from "@geonil2/util-func";
+import {transferNft} from "../service";
+import {useRecoilValue} from "recoil";
+import {accountAtom} from "../recoil/account";
 
 
 const Card = ({item}: {item: any}) => {
@@ -13,6 +16,11 @@ const Card = ({item}: {item: any}) => {
   const currentOwner = last(ownerHistory)
   const imageUrl = photo
   const issueDate = moment(timestamp * 1000).fromNow()
+  const account = useRecoilValue(accountAtom)
+
+  const handleTransfer = async (to: string) => {
+    await transferNft(tokenId, to, account)
+  }
 
   return (
     <div className="card">
@@ -31,7 +39,7 @@ const Card = ({item}: {item: any}) => {
         <p className="card_description">{description}</p>
         <span className="card_time">{issueDate}</span>
         <div className="card_info">
-          <div className="icon"><img src={transferIcon} alt="transfer"/></div>
+          <div className="icon" onClick={() => handleTransfer('0xf2abC6d777cB4400F7D6bDB7c3f5F147330f358C')}><img src={transferIcon} alt="transfer"/></div>
           <div className="icon"><img src={copyrightIcon} alt="copyright"/></div>
         </div>
       </section>

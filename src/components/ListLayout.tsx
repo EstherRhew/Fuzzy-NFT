@@ -9,7 +9,6 @@ const ListLayout = ({list}: {list: IUploadedItem[]}) => {
     updated.sort((itemA, itemB) => {
       return Number(itemB.timestamp) - Number(itemA.timestamp)
     })
-    console.log(updated)
     return updated
   }
 
