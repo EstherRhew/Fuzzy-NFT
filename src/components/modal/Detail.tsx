@@ -3,6 +3,7 @@ import {IUploadedItem} from "../../type/type";
 import {last} from "../../utils/misc";
 import moment from "moment";
 import {firstLetterUppercase} from "@geonil2/util-func";
+import config from "../../config";
 
 const Detail = ({item}: {item?: IUploadedItem}) => {
   const {tokenId, ownerHistory, photo, location, description, timestamp} = item!
@@ -22,20 +23,23 @@ const Detail = ({item}: {item?: IUploadedItem}) => {
         </div>
         <div className="detail_mid">
           <div className="detail_item">
-            <span className="detail_key">Owned By</span>
+            <span className="detail_key">Owned by</span>
             <span className="detail_value">{currentOwner}</span>
           </div>
           <div className="detail_item">
-            <span className="detail_key">Created By</span>
+            <span className="detail_key">Created by</span>
             <span className="detail_value">{originalOwner}</span>
           </div>
-          <div className="detail_item">
+          <div className="detail_item description">
             <span className="detail_key">Description</span>
-            <span className="detail_value description">{description}</span>
+            <span className="detail_value">{description}</span>
           </div>
-          <div className="detail_item">
-            <span className="detail_key">Created At</span>
+          <div className="detail_item date">
+            <span className="detail_key">Created on</span>
             <span className="detail_value">{issueDate}</span>
+          </div>
+          <div className="detail_link">
+            <a href={`${config.OPENSEA_URL}/${config.CONTRACT_ADDRESS}/${tokenId}`} target='_blank'>View on Opensea</a>
           </div>
         </div>
       </section>
