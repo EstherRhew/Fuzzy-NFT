@@ -14,6 +14,7 @@ import {
 import {Route, Routes} from "react-router-dom";
 import Login from "./pages/Login";
 import {klaytn} from "./klaytn/caver";
+import MyPage from "./pages/MyPage";
 
 function App() {
   const loginStatus = useRecoilValue(loginStatusAtom)
@@ -34,7 +35,11 @@ function App() {
   return (
     <div className="App">
       {loginStatus && <Header />}
-      {loginStatus ? <Home /> : <Login />}
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/mypage' element={<MyPage />} />
+      </Routes>
+      {/*{loginStatus ? <Home /> : <Login />}*/}
     </div>
   );
 }

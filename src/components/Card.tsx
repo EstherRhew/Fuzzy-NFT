@@ -41,6 +41,11 @@ const Card = ({item}: { item: any }) => {
     }
   }
 
+  const onClickImage = () => {
+    setClicked(!clicked)
+    setModal('Detail')
+  }
+
   return (
     <>
       <div className="card">
@@ -52,7 +57,7 @@ const Card = ({item}: { item: any }) => {
             <span className="info_location">at {firstLetterUppercase(location)}</span>
           </div>
         </section>
-        <section className="card_image">
+        <section className="card_image" onClick={onClickImage}>
           <img src={imageUrl} alt=""/>
         </section>
         <section className="card_footer">
@@ -70,7 +75,7 @@ const Card = ({item}: { item: any }) => {
         </section>
       </div>
       {modal === 'Transfer' && clicked && <Modal type="transfer" handler={transferItem}/>}
-
+      {modal === 'Detail' && clicked && <Modal type="detail" item={item}/>}
     </>
   );
 };

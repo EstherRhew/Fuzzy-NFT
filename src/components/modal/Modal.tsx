@@ -1,8 +1,10 @@
 import React from 'react';
 import AddForm from "./AddForm";
 import Transfer from "./Transfer";
+import Detail from "./Detail";
+import {IUploadedItem} from "../../type/type";
 
-const Modal = ({type, handler} : {type: string, handler?: (arg: string) => void}) => {
+const Modal = ({type, item, handler} : {type: string, item?:IUploadedItem, handler?: (arg: string) => void}) => {
   switch(type) {
     case 'addForm':
       return (
@@ -16,6 +18,12 @@ const Modal = ({type, handler} : {type: string, handler?: (arg: string) => void}
           <Transfer transferItem={handler}/>
         </div>
       );
+    case 'detail':
+      return (
+        <div className="modal">
+          <Detail item={item}/>
+        </div>
+      )
     default:
       return null;
   }

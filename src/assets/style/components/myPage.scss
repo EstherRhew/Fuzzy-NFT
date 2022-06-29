@@ -1,0 +1,29 @@
+.mypage {
+  //position: relative;
+  .feed_list {
+    margin: 0 auto;
+    width:70%;
+    min-width: 600px;
+    max-width: 930px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: calc(100vh - 63px);
+    overflow-y: auto;
+    padding: 3em 0em;
+    //position: relative;
+    .card {
+      width: 32%;
+      min-width: 200px;
+      height: fit-content;
+      transition: transform 100ms ease-in;
+      cursor: pointer;
+      &:hover {
+        transform: scale(1.05);
+      }
+      .card_header, .card_footer {
+        display: none;
+      }
+    }
+  }
+}

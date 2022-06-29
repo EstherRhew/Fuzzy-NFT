@@ -1,6 +1,7 @@
 .modal {
   position:absolute;
   top: 64px;
+  left: 0px;
   width: 100%;
   height: calc(100vh - 64px);
   display: flex;
@@ -136,6 +137,63 @@
       border-radius: 0px 0px 5px 5px;
       padding: 1em;
       //height: 32px;
+    }
+  }
+
+  .detail_modal {
+    display: flex;
+    width: 70%;
+    min-width: 830px;
+    height: 70%;
+    max-height: 700px;
+    background-color: $white;
+    .detail_section {
+      width: 50%;
+      display: flex;
+      &.image {
+        align-items: center;
+        border-right: 1px solid $border-grey;
+        img {
+          width: 100%;
+          aspect-ratio: 1 / 1;
+        }
+      }
+      &.info {
+        display: flex;
+        flex-direction: column;
+        color: $dark-brown;
+        .detail_top {
+          border-bottom: 1px solid $border-grey;
+          padding: 1em;
+          .token_id {
+            margin-bottom: 10px;
+          }
+          .location {
+            font-size: 0.8rem;
+          }
+        }
+        .detail_mid {
+          padding: 1em;
+          .detail_item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.5em;
+            .detail_key {
+              font-size: 0.8rem;
+              color: $brownish-grey;
+              margin-bottom: 0.5em;
+            }
+            .detail_value {
+              font-size: 0.9rem;
+              &.description {
+                border: 1px solid $border-grey;
+                min-height: 8em;
+              }
+            }
+          }
+
+        }
+      }
     }
   }
 }
