@@ -12,6 +12,7 @@
       display: flex;
       align-items: center;
       padding: 1.5em;
+      position: relative;
       .info_img {
         width: 10%;
         aspect-ratio: 1 / 1;
@@ -28,6 +29,13 @@
           color: $brownish-grey;
           margin-top: 5px;
         }
+      }
+      .card_id {
+        position:absolute;
+        right: 8px;
+        top: 10px;
+        font-size: 0.85rem;
+        color: $dark-brown;
       }
     }
     &.card_image {

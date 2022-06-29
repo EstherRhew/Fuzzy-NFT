@@ -1,3 +1,5 @@
+import {caver} from "../klaytn/caver";
+
 export const last = (array) => {
   const length = array == null? 0 : array.length
   return length ? array[length - 1] : undefined
@@ -20,4 +22,12 @@ export function ensureIpfsUriPrefix(cidOrURI) {
     uri = uri.replace('ipfs://ipfs/', 'ipfs://')
   }
   return uri
+}
+
+export const isAddress = (address) => {
+  return caver.utils.isAddress(address)
+}
+
+export const toChecksumAddress = (address) => {
+  return caver.utils.toChecksumAddress(address)
 }

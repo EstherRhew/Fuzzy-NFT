@@ -95,6 +95,11 @@ const makeNFTMetadata = (assetURI: string, options: INewItem) => {
   }
 }
 
+export const ownerOf = async (tokenId: string) => {
+  const owner = await GalleryContract.methods.ownerOf(tokenId).call()
+  console.log(owner, 'owner')
+}
+
 export const transferNft = async (tokenId: string, to: string, from: string) => {
   console.log(tokenId, to, from, 'hhhh')
   await GalleryContract.methods.transferOwnership(tokenId, to).send({

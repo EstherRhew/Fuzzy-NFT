@@ -15,7 +15,7 @@ const ListLayout = ({list}: {list: IUploadedItem[]}) => {
   return (
     <ul className="feed_list">
       {orderList(list).map((item: IUploadedItem) =>
-      <Card item={item}/>
+      <Card item={item} key={item.timestamp}/>
       )}
     </ul>
   );

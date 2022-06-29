@@ -4,7 +4,7 @@ import ListLayout from "../components/ListLayout";
 import {getAllList} from "../service";
 import {useRecoilState, useSetRecoilState} from "recoil";
 import {ModalAtom} from "../recoil/modal";
-import AddForm from "../components/AddForm";
+import AddForm from "../components/modal/AddForm";
 import {IUploadedItem} from "../type/type";
 import {klaytn} from "../klaytn/caver";
 import {
@@ -16,31 +16,29 @@ import {
   walletStatusAtom
 } from "../recoil/account";
 import addIcon from '../assets/image/plus-solid.svg'
-import Modal from "../components/Modal";
+import Modal from "../components/modal/Modal";
+import {listAtom} from "../recoil/list";
 
 const Home = () => {
-  const [list, setList] = useState<IUploadedItem[]>([])
+  const [list, setList] = useRecoilState(listAtom)
   const [modal, setModal] = useRecoilState(ModalAtom)
   const [account, setAccount] = useRecoilState(accountAtom)
 
   const onClickAdd = async () => {
-    setModal(!modal)
+    setModal('AddForm')
   }
 
   useEffect(() => {
     getAllList()
       .then(setList)
-  }, [modal])
+  }, [])
 
-  useEffect(() => {
-    console.log(list, 'listsssss')
-  }, [list])
 
   return (
     <main className="home">
       <Button onClick={onClickAdd} text='Add' icon={addIcon}/>
       <ListLayout list={list} />
-      {modal && <Modal /> }
+      {modal === 'AddForm' && <Modal type='addForm'/> }
     </main>
   );
 };

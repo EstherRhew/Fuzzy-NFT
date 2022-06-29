@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {getAllList, uploadPhoto} from "../service";
-import { INewItem} from "../type/type";
-import {klaytn} from "../klaytn/caver";
+import {getAllList, uploadPhoto} from "../../service";
+import { INewItem} from "../../type/type";
+import {klaytn} from "../../klaytn/caver";
 import {useRecoilState} from "recoil";
-import {accountAtom} from "../recoil/account";
-import imageCompression from "../utils/imageCompression";
+import {accountAtom} from "../../recoil/account";
+import imageCompression from "../../utils/imageCompression";
 
-import previewSample from '../assets/image/star-regular.svg'
-import closeIcon from '../assets/image/xmark-solid.svg'
-import Button from "./Button";
-import {ModalAtom} from "../recoil/modal";
+import previewSample from '../../assets/image/star-regular.svg'
+import closeIcon from '../../assets/image/xmark-solid.svg'
+import Button from "../Button";
+import {ModalAtom} from "../../recoil/modal";
+import {listAtom} from "../../recoil/list";
 
 const MAX_IMAGE_SIZE = 30000 // 30KB
 const MAX_IMAGE_SIZE_MB = 0.03 // 30KB
@@ -25,18 +26,17 @@ const AddForm = () => {
   const [account, setAccount] = useRecoilState(accountAtom)
   const [isCompressing, setIsCompressing] = useState(false)
   const [modal, setModal] = useRecoilState(ModalAtom)
-
+  const [list, setList] = useRecoilState(listAtom)
 
   const handleFileChange = async (e: any) => {
-
     const file = e.target.files[0]
 
-    if (file.size > MAX_IMAGE_SIZE) {
-      setIsCompressing(true);
-      await compressImage(file)
-      setPreview(URL.createObjectURL(file));
-      return;
-    }
+    // if (file.size > MAX_IMAGE_SIZE) {
+    //   setIsCompressing(true);
+    //   await compressImage(file)
+    //   setPreview(URL.createObjectURL(file));
+    //   return;
+    // }
 
     setNewItem({
       ...newItem,
@@ -56,8 +56,9 @@ const AddForm = () => {
   const handleUpload = async (e: any) => {
     e.preventDefault()
     await uploadPhoto(newItem, account)
-    setModal(false);
-    await getAllList();
+    setModal('');
+    const list = await getAllList();
+    setList(list)
   }
 
   const compressImage = async (imageFile: any) => {
@@ -77,7 +78,7 @@ const AddForm = () => {
   }
 
   const onCloseModal = () => {
-    setModal(false);
+    setModal('');
   }
 
   useEffect(() => {
@@ -89,10 +90,10 @@ const AddForm = () => {
 
   return (
     <form className="add_form">
-      <header className="form_header">
+      <h4 className="form_header">
         <span>Upload Photo</span>
         <img src={closeIcon} alt="" className="close_icon" onClick={onCloseModal}/>
-      </header>
+      </h4>
         <div className="form_item">
           <label className="file_search_text">Search file</label>
           <div className="file_search">

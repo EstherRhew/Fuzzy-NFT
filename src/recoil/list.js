@@ -1,15 +1,7 @@
 import {atom} from "recoil";
 import sample from "../assets/image/capsule.png"
 
-const DEFAULT_LIST = [{
-  tokenId: 1,
-  photo: sample,
-  title: 'Title',
-  location: 'Seoul',
-  description: 'Happy happy day',
-  timestamp: '2312435',
-  },
-]
+const DEFAULT_LIST = []
 
 export const listAtom = atom({
   key: 'list',
