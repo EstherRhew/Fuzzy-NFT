@@ -7,3 +7,8 @@ export const listAtom = atom({
   key: 'list',
   default: DEFAULT_LIST,
 })
+
+export const myListAtom = atom({
+  key: 'myList',
+  default: DEFAULT_LIST
+})

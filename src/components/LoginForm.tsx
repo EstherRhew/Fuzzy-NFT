@@ -1,19 +1,21 @@
 import React from 'react';
-import {useRecoilState} from "recoil";
+import {useRecoilState, useSetRecoilState} from "recoil";
 import {accountAtom, connectWallet, isStorageLoggedIn, storageStatusAtom} from "../recoil/account";
+import {modalAtom} from "../recoil/modal";
 
 const LoginForm = () => {
   const [account, setAccount] = useRecoilState(accountAtom)
   const [storageStatus, setStorageStatus] = useRecoilState(storageStatusAtom)
+  const setModal = useSetRecoilState(modalAtom)
 
   const onLogin = async (e: any) => {
     e.preventDefault()
     const account = await connectWallet()
     if (account) {
-
       setAccount(account)
       setStorageStatus(isStorageLoggedIn())
     }
+    setModal('')
   }
   return (
     <form className="login_form">

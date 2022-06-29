@@ -3,6 +3,7 @@ import AddForm from "./AddForm";
 import Transfer from "./Transfer";
 import Detail from "./Detail";
 import {IUploadedItem} from "../../type/type";
+import LoginForm from "../LoginForm";
 
 const Modal = ({type, item, handler} : {type: string, item?:IUploadedItem, handler?: (arg: string) => void}) => {
   switch(type) {
@@ -22,6 +23,12 @@ const Modal = ({type, item, handler} : {type: string, item?:IUploadedItem, handl
       return (
         <div className="modal">
           <Detail item={item}/>
+        </div>
+      )
+    case 'login':
+      return (
+        <div className="modal">
+          <LoginForm />
         </div>
       )
     default:

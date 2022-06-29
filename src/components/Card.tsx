@@ -10,7 +10,7 @@ import {useRecoilState, useRecoilValue} from "recoil";
 import {accountAtom} from "../recoil/account";
 import {listAtom} from "../recoil/list";
 import Modal from "./modal/Modal";
-import {ModalAtom} from "../recoil/modal";
+import {modalAtom} from "../recoil/modal";
 
 
 const Card = ({item}: { item: any }) => {
@@ -23,7 +23,7 @@ const Card = ({item}: { item: any }) => {
   const [list, setList] = useRecoilState(listAtom)
   const [owner, setOwner] = useState(currentOwner)
   const [clicked, setClicked] = useState(false)
-  const [modal, setModal] = useRecoilState(ModalAtom)
+  const [modal, setModal] = useRecoilState(modalAtom)
 
   const onClickTransfer = () => {
     setClicked(!clicked)

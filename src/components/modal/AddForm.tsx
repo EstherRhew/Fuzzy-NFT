@@ -9,7 +9,7 @@ import imageCompression from "../../utils/imageCompression";
 import previewSample from '../../assets/image/star-regular.svg'
 import closeIcon from '../../assets/image/xmark-solid.svg'
 import Button from "../Button";
-import {ModalAtom} from "../../recoil/modal";
+import {modalAtom} from "../../recoil/modal";
 import {listAtom} from "../../recoil/list";
 
 const MAX_IMAGE_SIZE = 30000 // 30KB
@@ -25,7 +25,7 @@ const AddForm = () => {
   const [preview, setPreview] = useState('');
   const [account, setAccount] = useRecoilState(accountAtom)
   const [isCompressing, setIsCompressing] = useState(false)
-  const [modal, setModal] = useRecoilState(ModalAtom)
+  const [modal, setModal] = useRecoilState(modalAtom)
   const [list, setList] = useRecoilState(listAtom)
 
   const handleFileChange = async (e: any) => {

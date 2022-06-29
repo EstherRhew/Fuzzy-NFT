@@ -154,6 +154,7 @@
       &.image {
         align-items: center;
         border-right: 1px solid $border-grey;
+        background-color: $black;
         img {
           width: 100%;
           max-height: 100%;
@@ -164,6 +165,15 @@
         display: flex;
         flex-direction: column;
         color: $dark-brown;
+        position: relative;
+        .close_icon {
+          position:absolute;
+          width: 15px;
+          height: 15px;
+          right: 10px;
+          top: 10px;
+          cursor: pointer;
+        }
         .detail_top {
           border-bottom: 1px solid $border-grey;
           padding: 1em;
@@ -209,6 +219,37 @@
           }
         }
       }
+    }
+  }
+
+  .login_form {
+    width: 30%;
+    min-width: 400px;
+    max-width: 500px;
+    background-color: $white;
+    //border: 1px solid $border-grey;
+    //border-radius: 5px;
+    color: $dark-brown;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .login_form_header {
+      width: 100%;
+      text-align: center;
+      border-bottom: 1px solid $border-grey;
+      padding: 1em 0em;
+    }
+    p {
+      padding: 4em;
+    }
+    button {
+      background-color: $dark-brown;
+      color:$white;
+      width: 100%;
+      padding: 1em;
+      //border-radius: 0px 0px 5px 5px;
+
     }
   }
 }

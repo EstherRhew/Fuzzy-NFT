@@ -1,8 +1,8 @@
 import {atom} from "recoil";
 
-type Modal = 'Transfer' | 'AddForm' | 'Detail' | ''
+type Modal = 'Transfer' | 'AddForm' | 'Detail' | 'Login' | ''
 
-export const ModalAtom = atom<Modal>({
+export const modalAtom = atom<Modal>({
   key: 'Modal',
   default: ''
 })

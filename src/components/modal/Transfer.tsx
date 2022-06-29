@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {isAddress} from "../../utils/misc";
 import closeIcon from "../../assets/image/xmark-solid.svg";
 import {useRecoilState} from "recoil";
-import {ModalAtom} from "../../recoil/modal";
+import {modalAtom} from "../../recoil/modal";
 
 const Transfer = ({transferItem}: {transferItem?: (arg: string) => void}) => {
   const [address, setAddress] = useState<string>('')
   const [validAddress, setValidAddress] = useState<boolean>(true)
-  const [modal, setModal] = useRecoilState(ModalAtom)
+  const [modal, setModal] = useRecoilState(modalAtom)
 
   const handleChange = (e:any) => {
     setValidAddress(true)

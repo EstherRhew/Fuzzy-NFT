@@ -1,16 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import ListLayout from "../components/ListLayout";
-import {getMyList} from "../service";
-import {IUploadedItem} from "../type/type";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {myListAtom} from "../recoil/list";
 
 const MyPage = () => {
-  const [myList, setMyList] = useState<IUploadedItem[]>([])
-
-  useEffect(() => {
-    getMyList()
-      .then(setMyList)
-  },[])
-
+  const myList = useRecoilValue(myListAtom)
   return (
     <main className="mypage">
       <h4>My Photos</h4>
