@@ -6,10 +6,16 @@ exports.signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // 1. 가입된 유저인지 여부를 확인
-    const exist = await User.findOne({ email });
+    const existName = await User.findOne({name});
 
-    if (exist) {
+    if (existName) {
+      return res.status(400).json({ message: "Username already exist"})
+    }
+
+    // 1. 가입된 유저인지 여부를 확인
+    const existEmail = await User.findOne({ email });
+
+    if (existEmail) {
       return res.status(400).json({ message: "User already exist" });
     }
 
@@ -59,8 +65,6 @@ exports.login = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      wallet_address: user.wallet_address,
-      profile_image: user.profile_image,
       token,
     });
   } catch (error) {
