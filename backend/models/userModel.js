@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema({
     wallet_address: {
       type: [String]
     },
-    profile_image: {
+    image: {
+      type: String,
       data: Buffer,
       contentType: String,
     }

@@ -40,13 +40,13 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name, password } = req.body;
 
     // 1. 유저 있는지 확인
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ name });
 
     if (!user) {
-      return res.status(400).json({ message: "Invalid user email credentials" });
+      return res.status(400).json({ message: "Invalid user name credentials" });
     }
 
     // 2. 비밀번호 일치 여부 확인
@@ -71,3 +71,13 @@ exports.login = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+exports.getUserData = async (req, res) => {
+  try {
+    const name = req.params.name
+    const userData = await User.findOne({name})
+    return res.status(200).json({ userData });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}

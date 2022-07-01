@@ -1,9 +1,9 @@
 import axios from "axios";
 import config from "../config";
 
-export const login = async (email: string, password: string) => {
+export const login = async (name: string, password: string) => {
   try {
-    const data = {email, password}
+    const data = {name, password}
     const res = await axios.post(`${config.USER_API_URL}/login`, data)
     return res
   } catch (e) {
@@ -19,5 +19,20 @@ export const signup = async (name: string, email: string, password: string) => {
     return res
   } catch (e) {
     console.error(`Signup failed: ${e}`)
+  }
+}
+
+export const getUserData = async (userName: string) => {
+  try {
+    const {data} = await axios.get(`${config.USER_API_URL}/user/${userName}`)
+    const { name, email, wallet_address, image } = data.userData
+    return {
+      name,
+      email,
+      walletAddress: wallet_address,
+      image
+    }
+  } catch (e) {
+
   }
 }
