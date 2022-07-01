@@ -6,6 +6,7 @@ interface IBaseItem {
 }
 
 export interface IUploadedItem extends IBaseItem {
+  [a: string]: any
   tokenId: number;
   timestamp: string;
   ownerHistory: string[];

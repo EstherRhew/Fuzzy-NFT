@@ -19,7 +19,10 @@
         aspect-ratio: 1 / 1;
         border-radius: 50%;
         margin-right: 10px;
-        border: 1px solid $dark-brown;
+        border: 1px solid $brownish-grey;
+        &.sample {
+          padding: 0.5em;
+        }
       }
       .card_owner {
         font-size: 0.8rem;
@@ -77,7 +80,52 @@
           height: 15px;
           margin-left: 20px;
           cursor: pointer;
-          //color: $brown-grey;
+          position:relative;
+          .copyright {
+            //box-sizing: border-box;
+            //height: 0%;
+            display: none;
+            position:absolute;
+            right: 5px;
+            color: $white;
+            background-color: $black;
+            padding: 0em 0.5em;
+            font-size: 0.8rem;
+            border-radius: 3px;
+            transition: all 1500ms ease-in;
+            &.hover {
+              display: block;
+            }
+            .copyright_date {
+              position:absolute;
+              right: 0.5em;
+              top: 0.5em;
+              color: $brown-grey;
+            }
+            .copyright_title {
+              margin-bottom: 1em;
+              font-size: 0.8rem;
+              padding-top: 0.5em;
+            }
+            .copyright_item {
+              display: flex;
+              flex-direction: column;
+              margin-bottom: 1em;
+              .copyright_key {
+                color: $brown-grey;
+              }
+              .copyright_value {
+                text-decoration: underline;
+                font-size: 0.8rem;
+                margin-top: 5px;
+                cursor: pointer;
+                //color:
+                &:hover {
+                  color: $middle-grey;
+                }
+              }
+            }
+          }
         }
       }
 

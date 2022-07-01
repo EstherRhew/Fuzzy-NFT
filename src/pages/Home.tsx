@@ -13,15 +13,23 @@ import {accountAtom} from "../recoil/account";
 const Home = () => {
   const [list, setList] = useRecoilState(listAtom)
   const [modal, setModal] = useRecoilState(modalAtom)
+  const [loading, setLoading] = useState(false)
 
   const onClickAdd = async () => {
     setModal('AddForm')
   }
 
+  useEffect(() => {
+    setLoading(true)
+    getAllList()
+      .then(setList)
+      .then(() => setLoading(false))
+  }, [])
+
   return (
     <main className="home">
       <Button onClick={onClickAdd} text='Add' icon={addIcon}/>
-      <ListLayout list={list} />
+      <ListLayout list={list} loading={loading}/>
       {modal === 'AddForm' && <Modal type='addForm'/> }
       {modal === 'Login' && <Modal type='login'/> }
     </main>

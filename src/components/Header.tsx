@@ -15,6 +15,7 @@ import logoutIcon from '../assets/image/icon-logout.png'
 import {shortCutAddress} from "@geonil2/util-func";
 import {Link} from "react-router-dom";
 import {modalAtom} from "../recoil/modal";
+import Search from "./Search";
 
 
 const Header = () => {
@@ -36,9 +37,13 @@ const Header = () => {
   return (
     <header className="header">
       <section className="header_left">
-        <Link to={'/'}>logo</Link></section>
+        <Link to={'/'}>logo</Link>
+      </section>
+      <section className="header_search">
+        <Search />
+      </section>
       <section className="header_right">
-        <Link to={'/mypage'}>
+        <Link to={`/${account}`}>
           <div className="menu_item">
             <Button onClick={() => {
             }} text="wallet" icon={walletIcon}/>

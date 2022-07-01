@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
 import {isAddress} from "../../utils/misc";
 import closeIcon from "../../assets/image/xmark-solid.svg";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {modalAtom} from "../../recoil/modal";
+import {clickedAtom} from "../../recoil/clicked";
 
 const Transfer = ({transferItem}: {transferItem?: (arg: string) => void}) => {
   const [address, setAddress] = useState<string>('')
   const [validAddress, setValidAddress] = useState<boolean>(true)
   const [modal, setModal] = useRecoilState(modalAtom)
+  const clicked = useRecoilValue(clickedAtom)
 
   const handleChange = (e:any) => {
     setValidAddress(true)
@@ -35,7 +37,7 @@ const Transfer = ({transferItem}: {transferItem?: (arg: string) => void}) => {
   return (
     <div className="transfer_modal">
       <h4>
-        <span>Transfer NFT to</span>
+        <span>Transfer #{clicked} NFT </span>
         <img src={closeIcon} alt="" className="close_icon" onClick={onCloseModal}/>
       </h4>
       <div className="input_box">

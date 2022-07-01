@@ -1,4 +1,5 @@
 import {caver} from "../klaytn/caver";
+import config from "../config";
 
 export const last = (array) => {
   const length = array == null? 0 : array.length
@@ -30,4 +31,8 @@ export const isAddress = (address) => {
 
 export const toChecksumAddress = (address) => {
   return caver.utils.toChecksumAddress(address)
+}
+
+export const linkToKlaytnScope = (type, address) => {
+  return `${config.KLAYTN_SCOPE_URL}/${type}/${address}`
 }

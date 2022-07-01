@@ -7,7 +7,8 @@ const configs = {
   PUBLIC_KEY: process.env.REACT_APP_PUBLIC_KEY,
   // CONTRACT_ADDRESS: '0x207725476Bd624cC430fa664d8a1aABc57E05943'
   CONTRACT_ADDRESS: '0x85609FA9FB8F1428Af8F830ed3b58e1d5F85046d',
-  OPENSEA_URL: 'https://testnets.opensea.io/assets/baobab'
+  OPENSEA_URL: 'https://testnets.opensea.io/assets/baobab',
+  KLAYTN_SCOPE_URL: 'https://baobab.scope.klaytn.com'
 }
 
 export default configs

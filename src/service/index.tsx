@@ -28,18 +28,18 @@ export const getAllList = async () => {
   return Promise.all(list)
 }
 
-export const getMyList = async () => {
-  const balance = await GalleryContract.methods.balanceOf('0xd57e65a0E080F554c7d2715415402Bbd6Ff344C1').call()
+export const getMyList = async (account: string) => {
+  const balance = await GalleryContract.methods.balanceOf(account).call()
   const list: IUploadedItem[] = []
   if (balance === 0) {
     return list
   }
   for (let i = 0; i < balance; i++) {
-    const tokenId = await GalleryContract.methods.tokenOfOwnerByIndex('0xd57e65a0E080F554c7d2715415402Bbd6Ff344C1', i).call();
+    const tokenId = await GalleryContract.methods.tokenOfOwnerByIndex(account, i).call();
     const res = await GalleryContract.methods.getPhoto(tokenId).call();
     const metadata = await getNFTMetadata(tokenId)
     const photoUrl = await getImageUrl(metadata.image)
-    console.log(tokenId, res, metadata, photoUrl, 'hereee')
+    // console.log(tokenId, res, metadata, photoUrl, 'hereee')
     const item = {
       tokenId: res[0],
       ownerHistory: res[1],

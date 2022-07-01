@@ -14,7 +14,7 @@ import {
 import {Route, Routes} from "react-router-dom";
 import Login from "./pages/Login";
 import {klaytn} from "./klaytn/caver";
-import MyPage from "./pages/MyPage";
+import IndividualPage from "./pages/IndividualPage";
 import {getAllList, getMyList} from "./service";
 import {listAtom, myListAtom} from "./recoil/list";
 import {IUploadedItem} from "./type/type";
@@ -25,7 +25,7 @@ function App() {
   const [walletStatus, setWalletStatus] = useRecoilState(walletStatusAtom)
   const [storageStatus,setStorageStatus] = useRecoilState(storageStatusAtom)
   const [list, setList] = useRecoilState(listAtom)
-  const [myList, setMyList] = useRecoilState<IUploadedItem[]>(myListAtom)
+  const [myList, setMyList] = useRecoilState(myListAtom)
 
   useEffect(() => {
     onUnlockAccount(setWalletStatus)
@@ -33,19 +33,10 @@ function App() {
     onAccountsChanged(setAccount)
   }, [])
 
-  useEffect(() => {
-    getAllList()
-      .then(setList)
-  }, [])
 
 
-  useEffect(() => {
-    if (!account) {
-      return;
-    }
-    getMyList()
-      .then(setMyList)
-  },[account])
+
+
 
   useEffect(() => {
     console.log(klaytn.selectedAddress, walletStatus, storageStatus, loginStatus, 'w-s-l')
@@ -56,7 +47,7 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/mypage' element={<MyPage />} />
+        <Route path='/:account' element={<IndividualPage />} />
       </Routes>
       {/*{loginStatus ? <Home /> : <Login />}*/}
     </div>

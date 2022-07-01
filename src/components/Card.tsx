@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {drawImageFromBytes} from "../utils/imageUtils";
-import {last, toChecksumAddress} from "../utils/misc";
+import {last, linkToKlaytnScope, toChecksumAddress} from "../utils/misc";
 import moment from "moment";
-import transferIcon from '../assets/image/arrow-right-arrow-left-solid.svg'
-import copyrightIcon from '../assets/image/copyright-solid.svg'
+
 import {firstLetterUppercase, shortCutAddress} from "@geonil2/util-func";
 import {getAllList, ownerOf, transferNft} from "../service";
 import {useRecoilState, useRecoilValue} from "recoil";
@@ -12,6 +11,11 @@ import {listAtom} from "../recoil/list";
 import Modal from "./modal/Modal";
 import {modalAtom} from "../recoil/modal";
 
+import transferIcon from '../assets/image/arrow-right-arrow-left-solid.svg'
+import copyrightIcon from '../assets/image/copyright-solid.svg'
+import profileIcon from '../assets/image/user-solid.svg'
+import {Link} from "react-router-dom";
+import {clickedAtom} from "../recoil/clicked";
 
 const Card = ({item}: { item: any }) => {
   const {tokenId, ownerHistory, photo, location, description, timestamp} = item
@@ -22,11 +26,11 @@ const Card = ({item}: { item: any }) => {
   const account = useRecoilValue(accountAtom)
   const [list, setList] = useRecoilState(listAtom)
   const [owner, setOwner] = useState(currentOwner)
-  const [clicked, setClicked] = useState(false)
+  const [clicked, setClicked] = useRecoilState(clickedAtom)
   const [modal, setModal] = useRecoilState(modalAtom)
-
+  const [copyright, setCopyright] = useState(false)
   const onClickTransfer = () => {
-    setClicked(!clicked)
+    setClicked(tokenId)
     setModal('Transfer')
   }
 
@@ -37,12 +41,12 @@ const Card = ({item}: { item: any }) => {
     } catch (err) {
       console.error(`TransferNft failed to ${to}, ${err}`)
     } finally {
-      setClicked(false)
+      // setClicked(false)
     }
   }
 
   const onClickImage = () => {
-    setClicked(!clicked)
+    setClicked(tokenId)
     setModal('Detail')
   }
 
@@ -50,10 +54,13 @@ const Card = ({item}: { item: any }) => {
     <>
       <div className="card">
         <section className="card_header">
-          {/*<img src={imageUrl} alt="" className="info_img"/>*/}
-          {/*<span className="card_id">#{tokenId}</span>*/}
+          <img src={profileIcon} alt="" className="info_img sample"/>
           <div className="card_owner">
-            <span className="info_account">{owner}</span>
+            <span className="info_account">
+              <Link to={`/${owner}`}>
+              {owner}
+                </Link>
+            </span>
             <span className="info_location">at {firstLetterUppercase(location)}</span>
           </div>
         </section>
@@ -70,12 +77,32 @@ const Card = ({item}: { item: any }) => {
                 <img src={transferIcon} alt="transfer"/>
               </div>
             }
-            <div className="icon"><img src={copyrightIcon} alt="copyright"/></div>
+            <div className="icon" onMouseOver={() => setCopyright(true)}
+                 onMouseOut={() => setCopyright(false)}>
+              <img src={copyrightIcon} alt="copyright"/>
+              <div className={`copyright ${copyright && 'hover'}`}>
+                    <h5 className="copyright_title">Copyright.#{tokenId}</h5>
+                    <span className="copyright_date">
+                      {issueDate}</span>
+                    <div className="copyright_item">
+                      <span className="copyright_key">Original Owner</span>
+                      <span className="copyright_value">
+                        <a href={linkToKlaytnScope('account', originalOwner)} target="_blank">{originalOwner}</a>
+                      </span>
+                    </div>
+                    <div className="copyright_item">
+                      <span className="copyright_key">Current Owner</span>
+                      <span className="copyright_value">
+                        <a href={linkToKlaytnScope('account', owner)} target="_blank">{owner}</a>
+                      </span>
+                    </div>
+              </div>
+            </div>
           </div>
         </section>
       </div>
-      {modal === 'Transfer' && clicked && <Modal type="transfer" handler={transferItem}/>}
-      {modal === 'Detail' && clicked && <Modal type="detail" item={item}/>}
+      {modal === 'Transfer' && clicked === tokenId && <Modal type="transfer" handler={transferItem}/>}
+      {modal === 'Detail' && clicked === tokenId &&  <Modal type="detail" item={item}/>}
     </>
   );
 };
