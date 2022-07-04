@@ -21,10 +21,12 @@ export const loginStatusAtom = selector({
   key: 'loginStatus',
   get: ({get}) => {
     const profile = get(profileAtom)
-    if (profile?.email === '') {
+    if (!profile || profile?.email === '') {
+      console.log('local storage false')
       localStorage.setItem('loginStatus', 'false')
       return false
     }
+    console.log('local storage true')
     localStorage.setItem('loginStatus', 'true')
     return true
   }

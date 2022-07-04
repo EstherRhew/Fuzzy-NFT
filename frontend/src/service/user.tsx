@@ -1,5 +1,6 @@
 import axios from "axios";
 import config from "../config";
+import {caver} from "../klaytn/caver";
 
 export const login = async (name: string, password: string) => {
   try {
@@ -19,6 +20,20 @@ export const signup = async (name: string, email: string, password: string) => {
     return res
   } catch (e) {
     console.error(`Signup failed: ${e}`)
+  }
+}
+
+export const addWalletAddress = async (name: string, address: string) => {
+  try {
+    console.log(name, address)
+    const signature = await caver.klay.sign(name, address)
+    console.log(11111)
+    const data = {name, address, signature}
+    console.log(22222)
+    const res = await axios.post(`${config.USER_API_URL}/addWalletAddress`, data)
+    console.log(res, 'add wallet res')
+  } catch (e) {
+    console.error(`Wallet add failed: ${e}`)
   }
 }
 
