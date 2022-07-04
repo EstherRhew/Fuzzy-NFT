@@ -23,6 +23,15 @@ export const signup = async (name: string, email: string, password: string) => {
   }
 }
 
+export const checkTokenValidity = async (token: string) => {
+  try {
+    const res = await axios.get(`${config.USER_API_URL}/verifyToken/${token}`)
+    return res.data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const addWalletAddress = async (name: string, address: string) => {
   try {
     const signature = await caver.klay.sign(name, address)
@@ -48,11 +57,12 @@ export const deleteWalletAddress = async (name: string, address: string) => {
   }
 }
 
-export const getUserData = async (userName: string) => {
+export const getUserData = async (userId: string) => {
   try {
-    const {data} = await axios.get(`${config.USER_API_URL}/user/${userName}`)
+    const {data} = await axios.get(`${config.USER_API_URL}/user/${userId}`)
     const { name, email, wallet_address, image } = data.userData
     return {
+      userId,
       name,
       email,
       walletAddress: wallet_address,

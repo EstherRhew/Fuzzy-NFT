@@ -30,11 +30,16 @@ exports.signup = async (req, res) => {
       name,
       email,
       password: encrypedPassword,
-    }).save();
-
-    return res.status(201).json({
-      message: "회원가입 완료",
+    }).save((error, user) => {
+      if (error) {
+        return res.status(500).json({message: error});
+      }
+      return res.status(201).json({user})      ;
     });
+
+    // return res.status(201).json({
+    //   message: "회원가입 완료",
+    // });
   } catch (error) {
     return res.status(500).json({message: error.message});
   }
@@ -73,6 +78,27 @@ exports.login = async (req, res) => {
     return res.status(500).json({message: error.message});
   }
 };
+
+exports.verifyToken = async (req, res) => {
+  try {
+    const token  = req.params.token;
+    const isValid = jwt.verify(token, "secret", [], (err, decoded) => {
+      if (err) {
+        return res.status(500).json({message: err});
+      }
+      const now = new Date().getTime()
+
+      if (decoded.exp * 1000 < now) {
+        return res.status(500).json({message: `token expired`});
+      }
+
+      return res.status(200).json({decoded});
+    })
+
+  } catch (error) {
+    return res.status(500).json({message: error.message});
+  }
+}
 
 exports.addWalletAddress = async (req, res) => {
   try {
@@ -145,8 +171,8 @@ exports.deleteWalletAddress = async (req, res) => {
 
 exports.getUserData = async (req, res) => {
   try {
-    const name = req.params.name
-    const userData = await User.findOne({name})
+    const userId = req.params.userId
+    const userData = await User.findOne({userId})
     return res.status(200).json({userData});
   } catch (error) {
     return res.status(500).json({message: error.message});

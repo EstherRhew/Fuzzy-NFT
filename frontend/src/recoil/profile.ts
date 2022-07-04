@@ -7,10 +7,15 @@ interface Profile {
   walletAddress: [string];
 }
 
-export const isStorageLoggedIn = () => {
-  const status = localStorage.getItem('loginStatus')
-  return status && JSON.parse(status)
+export const tokenInStorage = () => {
+  const token = localStorage.getItem('fuzzy')
+  return token || ''
 }
+
+export const loginTokenAtom = atom({
+  key: 'loginToken',
+  default: ''
+})
 
 export const profileAtom = atom<Profile | undefined>({
   key: 'profile',
@@ -21,12 +26,11 @@ export const loginStatusAtom = selector({
   key: 'loginStatus',
   get: ({get}) => {
     const profile = get(profileAtom)
-    if (!profile || profile?.email === '') {
-      console.log('local storage false')
+    const loginToken = get(loginTokenAtom)
+    if (!loginToken) {
       localStorage.setItem('loginStatus', 'false')
       return false
     }
-    console.log('local storage true')
     localStorage.setItem('loginStatus', 'true')
     return true
   }
