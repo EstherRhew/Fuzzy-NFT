@@ -25,15 +25,25 @@ export const signup = async (name: string, email: string, password: string) => {
 
 export const addWalletAddress = async (name: string, address: string) => {
   try {
-    console.log(name, address)
     const signature = await caver.klay.sign(name, address)
-    console.log(11111)
     const data = {name, address, signature}
-    console.log(22222)
     const res = await axios.post(`${config.USER_API_URL}/addWalletAddress`, data)
-    console.log(res, 'add wallet res')
   } catch (e) {
     console.error(`Wallet add failed: ${e}`)
+  }
+}
+
+export const deleteWalletAddress = async (name: string, address: string) => {
+  try {
+    console.log(name, address)
+    const signature = await caver.klay.sign(name, address)
+    console.log(signature, 'signature')
+    const data = {name, address, signature}
+    console.log(data, 'data')
+    const res = await axios.post(`${config.USER_API_URL}/deleteWalletAddress`, data)
+    console.log(res)
+  } catch (e) {
+    console.error(`Delete wallet failed: ${e}`)
   }
 }
 

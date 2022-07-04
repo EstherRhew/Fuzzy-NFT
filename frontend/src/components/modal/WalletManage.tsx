@@ -2,18 +2,21 @@ import React, {useEffect, useState} from 'react';
 import {useRecoilState} from "recoil";
 import {accountAtom} from "../../recoil/account";
 import {profileAtom} from "../../recoil/profile";
+import {addWalletAddress, deleteWalletAddress} from "../../service/user";
 
-const WalletManage = ({addWalletAccount} : {addWalletAccount?: (arg: string) => void}) => {
+const WalletManage = () => {
   const [account, setAccount] = useRecoilState(accountAtom)
   const [profile, setProfile] = useRecoilState(profileAtom)
 
   const onClickAdd = async (e: any) => {
     e.preventDefault()
-    if (!addWalletAccount) {
-      return;
-    }
 
-    await addWalletAccount(account)
+    await addWalletAddress(profile!.name, account)
+  }
+
+  const onClickDelete = async (address: string) => {
+    console.log(account, address)
+    await deleteWalletAddress(profile!.name, address)
   }
 
   useEffect(() => {
@@ -31,7 +34,7 @@ const WalletManage = ({addWalletAccount} : {addWalletAccount?: (arg: string) => 
         {profile!.walletAddress.map((address) =>
         <li>
           <span>{address}</span>
-          <button>삭제</button>
+          <button onClick={() => onClickDelete(address)} className="btn delete">삭제</button>
         </li>
         )}
 
