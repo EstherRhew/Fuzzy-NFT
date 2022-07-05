@@ -16,7 +16,6 @@ export const signup = async (name: string, email: string, password: string) => {
   try {
     const data = {name, email, password}
     const res = await axios.post(`${config.USER_API_URL}/signup`, data)
-    console.log(res, 'res')
     return res
   } catch (e) {
     console.error(`Signup failed: ${e}`)
@@ -45,11 +44,8 @@ export const addWalletAddress = async (name: string, address: string) => {
 
 export const deleteWalletAddress = async (name: string, address: string) => {
   try {
-    console.log(name, address)
     const signature = await caver.klay.sign(name, address)
-    console.log(signature, 'signature')
     const data = {name, address, signature}
-    console.log(data, 'data')
     const res = await axios.post(`${config.USER_API_URL}/deleteWalletAddress`, data)
     return res
   } catch (e) {
@@ -59,9 +55,7 @@ export const deleteWalletAddress = async (name: string, address: string) => {
 
 export const getUserData = async (userId: string) => {
   try {
-    console.log(userId, 'userId!!!!')
     const {data} = await axios.get(`${config.USER_API_URL}/user/${userId}`)
-    console.log(data, 'data')
     const { _id, name, email, wallet_address, image } = data.userData
     return {
       userId,
@@ -76,14 +70,9 @@ export const getUserData = async (userId: string) => {
 }
 
 export const getUserIdByName = async (userName: string) => {
-
   try {
-
       const {data} = await axios.get(`${config.USER_API_URL}/userIdByName/${userName}`)
-      console.log(data, 'getuserid by info!!! data')
       return data.userId
-
-
   } catch (e) {
     console.error(`getUserIdByName failed: ${e}`)
   }
@@ -93,7 +82,6 @@ export const getUserIdByAddress = async (address: string) => {
   try {
       const _address = address.toLowerCase()
       const {data} = await axios.get(`${config.USER_API_URL}/userIdByAddress/${_address}`)
-      console.log(data, 'getuserid by info!!! data')
       return data.userId
   } catch (e) {
     console.error(`getUserIdByAddress failed: ${e}`)
