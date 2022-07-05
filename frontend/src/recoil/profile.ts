@@ -14,7 +14,7 @@ export const tokenInStorage = () => {
 
 export const loginTokenAtom = atom({
   key: 'loginToken',
-  default: ''
+  default: tokenInStorage()
 })
 
 export const profileAtom = atom<Profile | undefined>({
@@ -27,19 +27,12 @@ export const loginStatusAtom = selector({
   get: ({get}) => {
     const profile = get(profileAtom)
     const loginToken = get(loginTokenAtom)
-    if (!loginToken) {
-      localStorage.setItem('loginStatus', 'false')
+    localStorage.setItem('fuzzy', loginToken)
+    if (loginToken === '') {
       return false
     }
-    localStorage.setItem('loginStatus', 'true')
+
     return true
   }
 })
 
-// export const storageStatusAtom = selector({
-//   key: 'storageStatus',
-//   get: ({get}) => {
-//     const loginStatus = get(loginStatusAtom)
-//     return
-//   }
-// })

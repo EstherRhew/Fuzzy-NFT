@@ -69,6 +69,6 @@ export const getUserData = async (userId: string) => {
       image
     }
   } catch (e) {
-
+    console.error(`Get userData failed: ${e}`)
   }
 }
