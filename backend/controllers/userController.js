@@ -171,9 +171,30 @@ exports.deleteWalletAddress = async (req, res) => {
 
 exports.getUserData = async (req, res) => {
   try {
-    const userId = req.params.userId
-    const userData = await User.findOne({userId})
+    const userId = req.params.userId //either id, name, or address
+    const userData = await User.findOne({_id: userId})
     return res.status(200).json({userData});
+  } catch (error) {
+    return res.status(500).json({message: error.message});
+  }
+}
+
+exports.getUserIdByName = async (req, res) => {
+  try {
+    const name = req.params.name
+    const userData = await User.findOne({name})
+    return res.status(200).json({userId: userData._id});
+  } catch (error) {
+    return res.status(500).json({message: error.message});
+  }
+}
+
+exports.getUserIdByAddress = async (req, res) => {
+  try {
+    const address = req.params.address
+    const userData = await User.findOne({wallet_address: { $in: address}})
+    // console.log(userdata, 'userData with address')
+    return res.status(200).json({userId: userData._id});
   } catch (error) {
     return res.status(500).json({message: error.message});
   }

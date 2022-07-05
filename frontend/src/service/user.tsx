@@ -59,8 +59,10 @@ export const deleteWalletAddress = async (name: string, address: string) => {
 
 export const getUserData = async (userId: string) => {
   try {
+    console.log(userId, 'userId!!!!')
     const {data} = await axios.get(`${config.USER_API_URL}/user/${userId}`)
-    const { name, email, wallet_address, image } = data.userData
+    console.log(data, 'data')
+    const { _id, name, email, wallet_address, image } = data.userData
     return {
       userId,
       name,
@@ -70,5 +72,30 @@ export const getUserData = async (userId: string) => {
     }
   } catch (e) {
     console.error(`Get userData failed: ${e}`)
+  }
+}
+
+export const getUserIdByName = async (userName: string) => {
+
+  try {
+
+      const {data} = await axios.get(`${config.USER_API_URL}/userIdByName/${userName}`)
+      console.log(data, 'getuserid by info!!! data')
+      return data.userId
+
+
+  } catch (e) {
+    console.error(`getUserIdByName failed: ${e}`)
+  }
+}
+
+export const getUserIdByAddress = async (address: string) => {
+  try {
+      const _address = address.toLowerCase()
+      const {data} = await axios.get(`${config.USER_API_URL}/userIdByAddress/${_address}`)
+      console.log(data, 'getuserid by info!!! data')
+      return data.userId
+  } catch (e) {
+    console.error(`getUserIdByAddress failed: ${e}`)
   }
 }

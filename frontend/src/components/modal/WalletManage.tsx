@@ -24,7 +24,7 @@ const WalletManage = () => {
     if (!res) {
       return;
     }
-    const userData = await getUserData(profile!.name)
+    const userData = await getUserData(profile!.userId)
     setProfile(userData)
   }
 
@@ -34,7 +34,7 @@ const WalletManage = () => {
     if (!res) {
       return;
     }
-    const userData = await getUserData(profile!.name)
+    const userData = await getUserData(profile!.userId)
     setProfile(userData)
   }
 

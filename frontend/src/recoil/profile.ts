@@ -1,6 +1,7 @@
 import {atom, selector} from "recoil";
 
-interface Profile {
+export interface IProfile {
+  userId: string;
   name: string;
   email: string;
   image?: Buffer;
@@ -17,7 +18,7 @@ export const loginTokenAtom = atom({
   default: tokenInStorage()
 })
 
-export const profileAtom = atom<Profile | undefined>({
+export const profileAtom = atom<IProfile | undefined>({
   key: 'profile',
   default: undefined
 })
