@@ -12,7 +12,10 @@ config();
 
 database();
 
-app.use(cors());
+
+app.use(cors({
+  exposedHeaders: ['Autorization'],
+}));
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());

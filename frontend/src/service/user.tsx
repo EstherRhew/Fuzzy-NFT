@@ -1,6 +1,14 @@
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import config from "../config";
 import {caver} from "../klaytn/caver";
+import {ServerError} from "../type/type";
+
+const headers = (token: string) => {
+  return ({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  })
+}
 
 export const login = async (name: string, password: string) => {
   try {
@@ -31,31 +39,42 @@ export const checkTokenValidity = async (token: string) => {
   }
 }
 
-export const addWalletAddress = async (name: string, address: string) => {
+export const addWalletAddress = async (name: string, address: string, token: string) => {
   try {
     const signature = await caver.klay.sign(name, address)
     const data = {name, address, signature}
-    const res = await axios.post(`${config.USER_API_URL}/addWalletAddress`, data)
+    const res = await axios.post(`${config.USER_API_URL}/addWalletAddress`, data, {
+      headers: {Authorization: `Bearer ${token}`}
+    })
     return res
   } catch (e) {
-    console.error(`Wallet add failed: ${e}`)
+    const error = e as AxiosError
+    // console.error(`Wallet add failed: ${error}`)
+    // @ts-ignore
+    return {error: error.response.data}
   }
 }
 
-export const deleteWalletAddress = async (name: string, address: string) => {
+export const deleteWalletAddress = async (name: string, address: string, token: string) => {
   try {
     const signature = await caver.klay.sign(name, address)
     const data = {name, address, signature}
-    const res = await axios.post(`${config.USER_API_URL}/deleteWalletAddress`, data)
+    const res = await axios.post(`${config.USER_API_URL}/deleteWalletAddress`, data, {
+      headers: {Authorization: `Bearer ${token}`}
+    })
     return res
   } catch (e) {
     console.error(`Delete wallet failed: ${e}`)
   }
 }
 
-export const getUserData = async (userId: string) => {
+export const getUserData = async (userId: string, token: string) => {
+  console.log(token, 'token in getUserData')
   try {
-    const {data} = await axios.get(`${config.USER_API_URL}/user/${userId}`)
+    const {data} = await axios.get(`${config.USER_API_URL}/user/${userId}`, {
+      headers: {Authorization: `Bearer ${token}`}
+    })
+    console.log('getUserData succeeddddddddd')
     const { _id, name, email, wallet_address, image } = data.userData
     return {
       userId,
@@ -69,19 +88,23 @@ export const getUserData = async (userId: string) => {
   }
 }
 
-export const getUserIdByName = async (userName: string) => {
+export const getUserIdByName = async (userName: string, token: string) => {
   try {
-      const {data} = await axios.get(`${config.USER_API_URL}/userIdByName/${userName}`)
+      const {data} = await axios.get(`${config.USER_API_URL}/userIdByName/${userName}`, {
+        headers:{Authorization: `Bearer ${token}`}
+      })
       return data.userId
   } catch (e) {
     console.error(`getUserIdByName failed: ${e}`)
   }
 }
 
-export const getUserIdByAddress = async (address: string) => {
+export const getUserIdByAddress = async (address: string, token: string) => {
   try {
       const _address = address.toLowerCase()
-      const {data} = await axios.get(`${config.USER_API_URL}/userIdByAddress/${_address}`)
+      const {data} = await axios.get(`${config.USER_API_URL}/userIdByAddress/${_address}`, {
+        headers: {Authorization: `Bearer ${token}`}
+      })
       return data.userId
   } catch (e) {
     console.error(`getUserIdByAddress failed: ${e}`)
