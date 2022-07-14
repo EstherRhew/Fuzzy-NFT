@@ -137,8 +137,23 @@ exports.getUserIdByAddress = async (req, res) => {
   try {
     const address = req.params.address
     const userData = await User.findOne({wallet_address: { $in: address}})
-    // console.log(userdata, 'userData with address')
     return res.status(200).json({userId: userData._id});
+  } catch (error) {
+    return res.status(500).json({code: '500', message: error.message});
+  }
+}
+
+exports.uploadProfileImage = async (req, res) => {
+  try {
+    const {user_id} = req.body
+    const file  = req.file
+
+    const user = await User.findOneAndUpdate(
+      { _id: user_id },
+      { image: file.path });
+
+    return res.status(200).json({user})
+
   } catch (error) {
     return res.status(500).json({code: '500', message: error.message});
   }

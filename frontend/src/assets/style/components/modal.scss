@@ -1,0 +1,348 @@
+.modal {
+  position:absolute;
+  top: 64px;
+  left: 0px;
+  width: 100%;
+  height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(44,44,44,0.9);
+  z-index: 10;
+
+  .add_form {
+    width: 30%;
+    min-width:330px;
+    max-width: 500px;
+    //max-height: 90%;
+    background-color: $white;
+    border: 1px solid $border-grey;
+    border-radius: 5px;
+    color: $dark-brown;
+    .form_header {
+      padding: 1em 0em;
+      border-bottom: 1px solid $border-grey;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      position: relative;
+      .close_icon {
+        position:absolute;
+        width: 15px;
+        height: 15px;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        z-index: 10;
+      }
+    }
+    .form_item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+      padding: 0em 0.5em;
+      &.image {
+        padding: 0em;
+      }
+      label {
+        margin-bottom: 5px;
+        font-size: 0.8rem;
+      }
+      input {
+        border: 1px solid $border-grey;
+        border-radius: 5px;
+        padding: 5px 10px;
+        &#file {
+          display: none;
+        }
+      }
+      .file_search {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        input {
+          flex:1;
+          border-radius: 5px 0px 0px 5px;
+        }
+        .input_file_btn {
+          background-color: $dark-brown;
+          color:$white;
+          height: 32px;
+          padding: 5px 10px;
+          margin-bottom: 0px;
+          display: flex;
+          align-items: center;
+          border-radius: 0px 5px 5px 0px;
+          cursor: pointer;
+        }
+      }
+      .img_preview {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border: 1px solid $border-grey;
+        border-radius: 5px;
+        &.sample {
+          padding: 45%;
+        }
+      }
+    }
+  }
+
+  .transfer_modal {
+    background-color: $white;
+    //border: 1px solid $border-grey;
+    border-radius: 5px;
+    color: $dark-brown;
+    width: 30%;
+    min-width:400px;
+    max-width: 500px;
+    h4 {
+      padding: 1em;
+      border-bottom: 1px solid $border-grey;
+      position: relative;
+      .close_icon {
+        position:absolute;
+        width: 15px;
+        height: 15px;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        z-index: 10;
+      }
+    }
+    .input_box {
+      padding: 2.5em 1em 3em;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      label {
+        font-size: 0.8rem;
+        margin-bottom: 0.5em;
+        color:$brownish-grey;
+      }
+      input {
+        font-size: 0.8rem;
+        padding: 3px 5px;
+        color:$brownish-grey;
+        border: none;
+        border: 1px solid $border-grey;
+      }
+    }
+    .error {
+      color: $alert-red;
+      font-size: 0.7rem;
+      position: absolute;
+      bottom: 2.7em;
+    }
+    .btn {
+      width: 100%;
+      background-color: $dark-brown;
+      color: $white;
+      border-radius: 0px 0px 5px 5px;
+      padding: 1em;
+      //height: 32px;
+    }
+  }
+
+  .detail_modal {
+    display: flex;
+    width: 70%;
+    min-width: 830px;
+    max-width: 1000px;
+    height: 70%;
+    max-height: 700px;
+    background-color: $white;
+    .detail_section {
+      width: 50%;
+      display: flex;
+      &.image {
+        align-items: center;
+        border-right: 1px solid $border-grey;
+        background-color: $black;
+        img {
+          width: 100%;
+          max-height: 100%;
+          aspect-ratio: 1 / 1;
+        }
+      }
+      &.info {
+        display: flex;
+        flex-direction: column;
+        color: $dark-brown;
+        position: relative;
+        .close_icon {
+          position:absolute;
+          width: 15px;
+          height: 15px;
+          right: 10px;
+          top: 10px;
+          cursor: pointer;
+          z-index: 10;
+        }
+        .detail_top {
+          border-bottom: 1px solid $border-grey;
+          padding: 1em;
+          position:relative;
+          display: flex;
+          align-items: center;
+          .info_img.sample {
+            width: 3em;
+            height: 3em;
+            padding: 0.5em;
+            border: 1px solid $border-grey;
+            border-radius: 50%;
+            margin-right: 1em;
+          }
+          .detail_top_text {
+            .owner{
+              font-size: 1.1rem;
+              margin-bottom: 5px;
+            }
+            .location {
+              font-size: 0.8rem;
+            }
+          }
+
+        }
+        .detail_mid {
+          padding: 1em;
+          .token_id {
+            margin-bottom: 2em;
+          }
+          .detail_item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.5em;
+            &.description .detail_value{
+              border: 1px solid $border-grey;
+              min-height: 5em;
+              padding: 5px;
+            }
+            &.date {
+              flex-direction: row;
+              .detail_value {
+                font-size: 0.8rem;
+                color: $brownish-grey;
+                margin-left: 5px;
+              }
+            }
+            .detail_key {
+              font-size: 0.8rem;
+              color: $brownish-grey;
+              margin-bottom: 0.5em;
+            }
+            .detail_value {
+              font-size: 0.8rem;
+
+            }
+
+          }
+          .detail_link a{
+            font-size: 0.8rem;
+          }
+        }
+        .buttons {
+          position:absolute;
+          display: flex;
+          align-items: center;
+          padding: 1em;
+          bottom: 0px;
+          right: 0px;
+          cursor: pointer;
+          img {
+            width: 0.9em;
+            height: 0.9em;
+            margin-right: 0.5em;
+          }
+          span {
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+  }
+
+  .wallet_modal {
+    width: 30%;
+    min-width:460px;
+    max-width: 500px;
+    background-color: $white;
+    color: $dark-brown;
+    h4 {
+      padding: 1em;
+      border-bottom: 1px solid $border-grey;
+      position:relative;
+      .close_icon {
+        position:absolute;
+        width: 15px;
+        height: 15px;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        z-index: 10;
+      }
+    }
+    .wallet_list {
+      padding: 0.5em 1em 2em;
+      min-height: 10em;
+      .wallet_item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: $dark-brown;
+        font-size: 0.9rem;
+        margin-bottom: 0.5em;
+        &.header {
+          padding: 1em 0em 0.5em;
+          border-bottom: none;
+          font-weight: 600;
+          position: relative;
+          background-color: transparent;
+          z-index: 0;
+        }
+        .btn.delete {
+          background-color: $light-grey;
+          padding: 5px 10px;
+          font-size: 0.8rem;
+          color: $dark-brown;
+        }
+      }
+    }
+    .wallet_to_add {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.8rem;
+      .input_item {
+        padding: 0.5em 1em;
+        display: flex;
+        flex-direction: column;
+        label {
+          font-size: 0.8rem;
+          margin-bottom: 5px;
+          color: $dark-brown;
+        }
+        input {
+          padding: 5px;
+          color: $dark-brown;
+          &.input_disabled {
+            background-color: $light-grey;
+            border: 1px solid $dark-brown;
+
+          }
+        }
+        .warning {
+          margin-top: 5px;
+          color: $alert-red;
+        }
+      }
+      .btn {
+        width: 100%;
+        background-color: $dark-brown;
+        color:$white;
+        padding: 1em;
+        margin-top: 1em;
+      }
+    }
+  }
+}
+

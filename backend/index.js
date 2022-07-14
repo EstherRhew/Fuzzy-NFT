@@ -20,6 +20,8 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
 
+app.use(express.static("uploads"))
+
 app.use("/api/users", require("./routes/userRoute"))
 
 app.listen(process.env.PORT, () => {

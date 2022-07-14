@@ -69,12 +69,10 @@ export const deleteWalletAddress = async (name: string, address: string, token: 
 }
 
 export const getUserData = async (userId: string, token: string) => {
-  console.log(token, 'token in getUserData')
   try {
     const {data} = await axios.get(`${config.USER_API_URL}/user/${userId}`, {
       headers: {Authorization: `Bearer ${token}`}
     })
-    console.log('getUserData succeeddddddddd')
     const { _id, name, email, wallet_address, image } = data.userData
     return {
       userId,
@@ -108,5 +106,15 @@ export const getUserIdByAddress = async (address: string, token: string) => {
       return data.userId
   } catch (e) {
     console.error(`getUserIdByAddress failed: ${e}`)
+  }
+}
+
+export const uploadProfileImage = async (userId: string, formData: any) => {
+  try {
+    const res = await axios.put(`${config.USER_API_URL}/uploadProfileImage`, formData)
+    console.log(res, 'upload res')
+  } catch (e) {
+    console.error(`photo upload failed: ${e}`)
+
   }
 }
