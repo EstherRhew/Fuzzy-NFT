@@ -19,8 +19,8 @@
         aspect-ratio: 1 / 1;
         border-radius: 50%;
         margin-right: 10px;
-        border: 1px solid $brownish-grey;
         &.sample {
+          border: 1px solid $brownish-grey;
           padding: 0.5em;
         }
       }

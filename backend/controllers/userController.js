@@ -147,10 +147,10 @@ exports.uploadProfileImage = async (req, res) => {
   try {
     const {user_id} = req.body
     const file  = req.file
-
+    console.log(file, 222)
     const user = await User.findOneAndUpdate(
       { _id: user_id },
-      { image: file.path });
+      { image: `http://localhost:5000/image/${file.filename}` });
 
     return res.status(200).json({user})
 

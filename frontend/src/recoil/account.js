@@ -35,18 +35,6 @@ export const onAccountsChanged = (handler) => {
   })
 }
 
-export const onUnlockAccount = (handler) => {
-  const loop = () => {
-    setTimeout(async () => {
-      const unlocked = await isUnlocked()
-      // console.log(unlocked)
-      handler(unlocked)
-      loop()
-    }, 1500)
-  }
-  loop();
-}
-
 export const walletUnlockStatusAtom = atom({
   key: 'walletStatus',
   default: !!kaikasSelectedAddress()

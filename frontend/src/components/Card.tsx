@@ -60,7 +60,7 @@ const Card = ({item}: { item: any }) => {
     <>
       <div className="card">
         <section className="card_header">
-          <img src={profileIcon} alt="" className="info_img sample"/>
+          <img src={profile?.image ? profile.image : profileIcon} alt="" className={`info_img ${!profile?.image && 'sample'}`}/>
           <div className="card_owner">
             <span className="info_account">
               <Link to={`/${owner}`}>

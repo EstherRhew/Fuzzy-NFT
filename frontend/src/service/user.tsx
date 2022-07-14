@@ -113,6 +113,7 @@ export const uploadProfileImage = async (userId: string, formData: any) => {
   try {
     const res = await axios.put(`${config.USER_API_URL}/uploadProfileImage`, formData)
     console.log(res, 'upload res')
+    return res.data
   } catch (e) {
     console.error(`photo upload failed: ${e}`)
 

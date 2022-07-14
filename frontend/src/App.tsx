@@ -3,9 +3,8 @@ import './assets/style/style.scss';
 import Home from "./pages/Home";
 import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 import {
-  accountAtom,
+  accountAtom, isUnlocked,
   onAccountsChanged,
-  onUnlockAccount,
   walletUnlockStatusAtom,
 } from "./recoil/account";
 import {loginStatusAtom, tokenInStorage, loginTokenAtom, profileAtom,} from './recoil/profile'
@@ -26,8 +25,20 @@ function App() {
     setProfile(userData)
   }
 
+  const onUnlockAccount = () => {
+    const loop = () => {
+      setTimeout(async () => {
+        const unlocked = await isUnlocked()
+        // console.log(unlocked)
+        setWalletUnlockStatus(unlocked)
+        loop()
+      }, 1500)
+    }
+    loop();
+  }
+
   useEffect(() => {
-    onUnlockAccount(setWalletUnlockStatus)
+    onUnlockAccount()
     onAccountsChanged(setAccount)
   }, [])
 

@@ -65,7 +65,8 @@ const ProfilePage = () => {
     const formData = new FormData();
     formData.append("profile_img", file);
     formData.append("user_id", profile.userId)
-    await uploadProfileImage(profile.userId, formData)
+    const updatedUser = await uploadProfileImage(profile.userId, formData)
+    console.log(updatedUser.user, updatedUser.user.image)
     setPreview('')
   }
 
@@ -96,9 +97,9 @@ const ProfilePage = () => {
             <input id="file" type="file" accept="image/*" onChange={handleFileChange} className="input_upload"/>
             <label htmlFor="file" className="label_upload">
               <div className="img_box">
-              {preview === ''
-                ? <img src="//localhost:5000/uploads/1657766375553_icon-logout.png" alt="" className="info_img"/>
-                : <img src={preview} alt="" className="info_img preview"/>
+              {profile?.image
+                ? <img src={profile.image} alt="" className="info_img"/>
+                : <img src={preview === '' ? profileIcon : preview} alt="" className="info_img preview"/>
               }
               </div>
             </label>

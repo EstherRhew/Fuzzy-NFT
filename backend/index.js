@@ -12,7 +12,7 @@ config();
 
 database();
 
-
+app.use("/image", express.static("./uploads"))
 app.use(cors({
   exposedHeaders: ['Autorization'],
 }));
@@ -20,7 +20,7 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
 
-app.use(express.static("uploads"))
+
 
 app.use("/api/users", require("./routes/userRoute"))
 

@@ -4,7 +4,7 @@ export interface IProfile {
   userId: string;
   name: string;
   email: string;
-  image?: Buffer;
+  image: string;
   walletAddress: [string];
 }
 
