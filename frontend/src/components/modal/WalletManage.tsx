@@ -22,7 +22,7 @@ const WalletManage = () => {
       return;
     }
 
-    const userId = await getUserIdByAddress(account, loginToken)
+    const userId = await getUserIdByAddress(account)
 
     if (userId) {
       setErrorMessage('이미 다른 유저가 사용 중인 주소입니다.')
@@ -33,7 +33,7 @@ const WalletManage = () => {
     if (!res) {
       return;
     }
-    const userData = await getUserData(profile!.userId, loginToken)
+    const userData = await getUserData(profile!.userId)
     setProfile(userData)
   }
 
@@ -42,7 +42,7 @@ const WalletManage = () => {
     if (!res) {
       return;
     }
-    const userData = await getUserData(profile!.userId, loginToken)
+    const userData = await getUserData(profile!.userId)
     setProfile(userData)
   }
 

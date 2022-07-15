@@ -5,17 +5,27 @@ import {ensureIpfsUriPrefix, last, stripIpfsUriPrefix} from "../utils/misc";
 import axios from "axios";
 import {getUserData, getUserIdByAddress} from "./user";
 
-export const getAllList = async (token: string) => {
-  const totalCount = await GalleryContract.methods.getTotalPhotoCount().call();
+const LIMIT = 5
+
+export const getTotalCount = async () => {
+  return await GalleryContract.methods.getTotalPhotoCount().call();
+}
+
+export const getAllList = async (lastIndex: number) => {
   const list: IUploadedItem[] = []
-  if (totalCount === 0) {
+  if (lastIndex === 0) {
     return list
   }
-  for (let i = 1; i <= totalCount; i++) {
+  let offset = lastIndex - (LIMIT - 1)
+  if (offset < 1) {
+    offset = 1
+  }
+
+  for (let i = offset; i <= lastIndex; i++) {
     const res = await GalleryContract.methods.getPhoto(i).call();
     const metadata = await getNFTMetadata(i.toString())
-    const ownerId = await getUserIdByAddress(last(res[1]), token)
-    const userData = await getUserData(ownerId, token)
+    const ownerId = await getUserIdByAddress(last(res[1]))
+    const userData = await getUserData(ownerId)
     const photoUrl = await getImageUrl(metadata.image)
     const item = {
       ownerName: userData?.name,
@@ -42,8 +52,8 @@ export const getMyList = async (account: string, token: string) => {
     const tokenId = await GalleryContract.methods.tokenOfOwnerByIndex(account, i).call();
     const res = await GalleryContract.methods.getPhoto(tokenId).call();
     const metadata = await getNFTMetadata(tokenId)
-    const ownerId = await getUserIdByAddress(last(res[1]), token)
-    const userData = await getUserData(ownerId, token)
+    const ownerId = await getUserIdByAddress(last(res[1]))
+    const userData = await getUserData(ownerId)
     const photoUrl = await getImageUrl(metadata.image)
     // console.log(tokenId, res, metadata, photoUrl, 'hereee')
     const item = {
@@ -63,7 +73,6 @@ export const getMyList = async (account: string, token: string) => {
 
 const getImageUrl = async (metadataUrl: string) => {
   const url = stripIpfsUriPrefix(metadataUrl)
-  // await axios(`https://ipfs.infura.io/ipfs/${url}`)
   return `https://ipfs.infura.io/ipfs/${url}`
 }
 

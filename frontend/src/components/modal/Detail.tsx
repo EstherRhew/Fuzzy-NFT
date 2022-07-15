@@ -27,8 +27,8 @@ const Detail = ({item}: {item?: IUploadedItem}) => {
   const loginToken = useRecoilValue(loginTokenAtom)
 
   const getOwnerProfile = async () => {
-    const userId = await getUserIdByAddress(currentOwner, loginToken)
-    const userData = await getUserData(userId, loginToken)
+    const userId = await getUserIdByAddress(currentOwner)
+    const userData = await getUserData(userId)
     setOwnerProfile(userData?.name)
   }
 

@@ -28,8 +28,8 @@ const ProfilePage = () => {
     if (!userName) {
       return;
     }
-    const userId = await getUserIdByName(userName, loginToken)
-    const userData = await getUserData(userId, loginToken)
+    const userId = await getUserIdByName(userName)
+    const userData = await getUserData(userId)
     setCurrentProfile(userData)
   }
 

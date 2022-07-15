@@ -68,11 +68,9 @@ export const deleteWalletAddress = async (name: string, address: string, token: 
   }
 }
 
-export const getUserData = async (userId: string, token: string) => {
+export const getUserData = async (userId: string) => {
   try {
-    const {data} = await axios.get(`${config.USER_API_URL}/user/${userId}`, {
-      headers: {Authorization: `Bearer ${token}`}
-    })
+    const {data} = await axios.get(`${config.USER_API_URL}/user/${userId}`)
     const { _id, name, email, wallet_address, image } = data.userData
     return {
       userId,
@@ -86,23 +84,19 @@ export const getUserData = async (userId: string, token: string) => {
   }
 }
 
-export const getUserIdByName = async (userName: string, token: string) => {
+export const getUserIdByName = async (userName: string) => {
   try {
-      const {data} = await axios.get(`${config.USER_API_URL}/userIdByName/${userName}`, {
-        headers:{Authorization: `Bearer ${token}`}
-      })
+      const {data} = await axios.get(`${config.USER_API_URL}/userIdByName/${userName}`)
       return data.userId
   } catch (e) {
     console.error(`getUserIdByName failed: ${e}`)
   }
 }
 
-export const getUserIdByAddress = async (address: string, token: string) => {
+export const getUserIdByAddress = async (address: string) => {
   try {
       const _address = address.toLowerCase()
-      const {data} = await axios.get(`${config.USER_API_URL}/userIdByAddress/${_address}`, {
-        headers: {Authorization: `Bearer ${token}`}
-      })
+      const {data} = await axios.get(`${config.USER_API_URL}/userIdByAddress/${_address}`)
       return data.userId
   } catch (e) {
     console.error(`getUserIdByAddress failed: ${e}`)

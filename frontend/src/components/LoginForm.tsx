@@ -41,7 +41,7 @@ const LoginForm = () => {
     const {data} = res
     localStorage.setItem('fuzzy', data.token)
     console.log(data, 'login data')
-    const userData = await getUserData(data._id, loginToken)
+    const userData = await getUserData(data._id)
     console.log(data.token, 'login token')
     setLoginToken(data.token)
     setProfile(userData)

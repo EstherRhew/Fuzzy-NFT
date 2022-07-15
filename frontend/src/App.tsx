@@ -21,7 +21,7 @@ function App() {
   const setProfile = useSetRecoilState(profileAtom)
 
   const handleLogin = async (userId: string, token: string) => {
-    const userData = await getUserData(userId, token)
+    const userData = await getUserData(userId)
     setProfile(userData)
   }
 

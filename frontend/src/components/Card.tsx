@@ -12,7 +12,10 @@ import copyrightIcon from '../assets/image/copyright-solid.svg'
 import profileIcon from '../assets/image/user-solid.svg'
 import {Link} from "react-router-dom";
 import {clickedAtom} from "../recoil/clicked";
-import {profileAtom} from "../recoil/profile";
+import {DEFAULT_PROFILE, IProfile, profileAtom} from "../recoil/profile";
+import {getUserData, getUserIdByName} from "../service/user";
+
+
 
 const Card = ({item}: { item: any }) => {
   const {ownerName, tokenId, ownerHistory, photo, location, description, timestamp} = item
@@ -21,7 +24,7 @@ const Card = ({item}: { item: any }) => {
   const imageUrl = photo
   const issueDate = moment(timestamp * 1000).fromNow()
   const account = useRecoilValue(accountAtom)
-  const [owner, setOwner] = useState(ownerName)
+  const [owner, setOwner] = useState<IProfile>(DEFAULT_PROFILE)
   const [clicked, setClicked] = useRecoilState(clickedAtom)
   const [modal, setModal] = useRecoilState(modalAtom)
   const [copyright, setCopyright] = useState(false)
@@ -35,7 +38,7 @@ const Card = ({item}: { item: any }) => {
   const transferItem = async (to: string) => {
     try {
       await transferNft(tokenId, to, account)
-      setOwner(to)
+      setOwner({...owner, name: to})
     } catch (err) {
       console.error(`TransferNft failed to ${to}, ${err}`)
     } finally {
@@ -56,15 +59,25 @@ const Card = ({item}: { item: any }) => {
     return false
   }
 
+  const getOwnerData = async () => {
+    const userId = await getUserIdByName(ownerName);
+    const userData = await getUserData(userId);
+    userData && setOwner(userData)
+  }
+
+  useEffect(() => {
+    getOwnerData()
+  }, [])
+
   return (
     <>
       <div className="card">
         <section className="card_header">
-          <img src={profile?.image ? profile.image : profileIcon} alt="" className={`info_img ${!profile?.image && 'sample'}`}/>
+          <img src={owner.image ? owner.image : profileIcon} alt="" className={`info_img ${!owner.image && 'sample'}`}/>
           <div className="card_owner">
             <span className="info_account">
               <Link to={`/${owner}`}>
-              {owner}
+              {owner.name}
                 </Link>
             </span>
             <span className="info_location">at {firstLetterUppercase(location)}</span>

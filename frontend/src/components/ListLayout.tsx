@@ -1,13 +1,18 @@
-import React, {useEffect} from 'react';
+import React, {forwardRef, useEffect, useState, useRef} from 'react';
+import _ from "lodash";
 import Card from "./Card";
 import {IUploadedItem} from "../type/type";
 import Spinner from '../assets/image/spinner-solid.svg'
 import {useRecoilValue} from "recoil";
 import {keywordAtom} from "../recoil/keyword";
 import {last} from "../utils/misc";
+import {getTotalCount} from "../service/contract";
 
-const ListLayout = ({list, loading}: { list: IUploadedItem[], loading: boolean }) => {
+const LIMIT = 5
+
+const ListLayout =({list, loading}: { list: IUploadedItem[], loading: boolean}) => {
   const keyword = useRecoilValue(keywordAtom)
+  const listLayoutRef = useRef<HTMLUListElement>(null)
 
   const orderList = (list: IUploadedItem[]) => {
     const updated = [...list]
@@ -35,20 +40,26 @@ const ListLayout = ({list, loading}: { list: IUploadedItem[], loading: boolean }
     return updated
   }
 
+
+
+
   return (
     loading
-      ? <ul className="feed_list">
+      ? <ul className="feed_list" ref={listLayoutRef}>
         <div className="loading">
           <img className="loading_spinner" src={Spinner} alt="spinner"/>
         </div>
       </ul>
       : list.length > 0
-        ? <ul className="feed_list">
+        ? <ul className="feed_list" ref={listLayoutRef}>
           {sortListByKeyword(orderList(list)).map((item: IUploadedItem) =>
             <Card item={item} key={item.timestamp}/>
           )}
+          <div className="loading">
+            <img className="loading_spinner" src={Spinner} alt="spinner"/>
+          </div>
         </ul>
-        : <ul className="feed_list">
+        : <ul className="feed_list" ref={listLayoutRef}>
           <p>No Items Found</p>
         </ul>
   );

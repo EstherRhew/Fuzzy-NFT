@@ -5,7 +5,15 @@ export interface IProfile {
   name: string;
   email: string;
   image: string;
-  walletAddress: [string];
+  walletAddress: string[];
+}
+
+export const DEFAULT_PROFILE = {
+  userId: "",
+  name: "",
+  email: "",
+  image: "",
+  walletAddress: []
 }
 
 export const tokenInStorage = () => {

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {getAllList, uploadPhoto} from "../../service/contract";
+import {getAllList, getTotalCount, uploadPhoto} from "../../service/contract";
 import { INewItem} from "../../type/type";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {accountAtom} from "../../recoil/account";
@@ -45,7 +45,8 @@ const AddForm = () => {
     e.preventDefault()
     await uploadPhoto(newItem, account)
     setModal('');
-    const list = await getAllList(loginToken);
+    const totalCount = await getTotalCount()
+    const list = await getAllList(totalCount);
     setList(list)
   }
 
