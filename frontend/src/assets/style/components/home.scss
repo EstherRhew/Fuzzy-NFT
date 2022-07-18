@@ -20,7 +20,7 @@
     align-items: center;
     margin-top: 63px;
     padding-top: 3em;
-    //min-height: 100vh;
+    min-height: calc(100vh - 63px);
     //max-height: 100vh;
     //height: calc(100vh - 63px);
     overflow-y: auto;

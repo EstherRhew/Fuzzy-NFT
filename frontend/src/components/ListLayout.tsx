@@ -1,12 +1,11 @@
 import React, {forwardRef, useEffect, useState, useRef} from 'react';
-import _ from "lodash";
 import Card from "./Card";
 import {IUploadedItem} from "../type/type";
 import Spinner from '../assets/image/spinner-solid.svg'
 import {useRecoilValue} from "recoil";
 import {keywordAtom} from "../recoil/keyword";
 import {last} from "../utils/misc";
-import {getTotalCount} from "../service/contract";
+import {useLocation} from "react-router-dom";
 
 interface IProps {
   list: IUploadedItem[];
@@ -16,12 +15,10 @@ interface IProps {
 
 type LoadingRef = HTMLDivElement
 
-const LIMIT = 5
-
-// {list, loading}: { list: IUploadedItem[], loading: boolean })
 const ListLayout = forwardRef<LoadingRef, IProps>(({list, loading, allLoaded}, loadingRef) => {
   const keyword = useRecoilValue(keywordAtom)
   const listLayoutRef = useRef<HTMLUListElement>(null)
+  const {pathname} = useLocation()
 
   const orderList = (list: IUploadedItem[]) => {
     const updated = [...list]
@@ -49,7 +46,6 @@ const ListLayout = forwardRef<LoadingRef, IProps>(({list, loading, allLoaded}, l
     return updated
   }
 
-
   return (
     loading && list.length === 0
       ? <ul className="feed_list" ref={listLayoutRef}>
@@ -62,7 +58,7 @@ const ListLayout = forwardRef<LoadingRef, IProps>(({list, loading, allLoaded}, l
           {sortListByKeyword(orderList(list)).map((item: IUploadedItem) =>
             <Card item={item} key={item.timestamp}/>
           )}
-          {!allLoaded
+          {!allLoaded && pathname === '/'
             && <div className="loading" ref={loadingRef}>
               <img className="loading_spinner" src={Spinner} alt="spinner"/>
             </div>
