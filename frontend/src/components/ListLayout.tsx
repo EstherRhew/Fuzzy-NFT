@@ -8,9 +8,18 @@ import {keywordAtom} from "../recoil/keyword";
 import {last} from "../utils/misc";
 import {getTotalCount} from "../service/contract";
 
+interface IProps {
+  list: IUploadedItem[];
+  loading: boolean;
+  allLoaded?: boolean;
+}
+
+type LoadingRef = HTMLDivElement
+
 const LIMIT = 5
 
-const ListLayout =({list, loading}: { list: IUploadedItem[], loading: boolean}) => {
+// {list, loading}: { list: IUploadedItem[], loading: boolean })
+const ListLayout = forwardRef<LoadingRef, IProps>(({list, loading, allLoaded}, loadingRef) => {
   const keyword = useRecoilValue(keywordAtom)
   const listLayoutRef = useRef<HTMLUListElement>(null)
 
@@ -27,7 +36,7 @@ const ListLayout =({list, loading}: { list: IUploadedItem[], loading: boolean}) 
       return list
     }
     const updated = list.filter((item) => {
-      const array =  Object.keys(item).map((key) => {
+      const array = Object.keys(item).map((key) => {
         if (key === 'ownerHistory') {
           const currentOwner = last(item[key])
           return currentOwner.includes(keyword)
@@ -41,10 +50,8 @@ const ListLayout =({list, loading}: { list: IUploadedItem[], loading: boolean}) 
   }
 
 
-
-
   return (
-    loading
+    loading && list.length === 0
       ? <ul className="feed_list" ref={listLayoutRef}>
         <div className="loading">
           <img className="loading_spinner" src={Spinner} alt="spinner"/>
@@ -55,14 +62,18 @@ const ListLayout =({list, loading}: { list: IUploadedItem[], loading: boolean}) 
           {sortListByKeyword(orderList(list)).map((item: IUploadedItem) =>
             <Card item={item} key={item.timestamp}/>
           )}
-          <div className="loading">
-            <img className="loading_spinner" src={Spinner} alt="spinner"/>
-          </div>
+          {!allLoaded
+            && <div className="loading" ref={loadingRef}>
+              <img className="loading_spinner" src={Spinner} alt="spinner"/>
+            </div>
+          }
+
+
         </ul>
         : <ul className="feed_list" ref={listLayoutRef}>
           <p>No Items Found</p>
         </ul>
   );
-};
+});
 
 export default ListLayout;

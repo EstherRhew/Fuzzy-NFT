@@ -76,7 +76,7 @@ const Card = ({item}: { item: any }) => {
           <img src={owner.image ? owner.image : profileIcon} alt="" className={`info_img ${!owner.image && 'sample'}`}/>
           <div className="card_owner">
             <span className="info_account">
-              <Link to={`/${owner}`}>
+              <Link to={`/${owner.name}`}>
               {owner.name}
                 </Link>
             </span>

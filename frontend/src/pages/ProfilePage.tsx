@@ -74,12 +74,14 @@ const ProfilePage = () => {
     setLoading(true)
     getMyItems()
       .then(() => setLoading(false))
+
+    return () => setMyList([])
   }, [currentProfile])
 
   useEffect(() => {
     getCurrentProfileData()
     console.log(profile, 'profile')
-  }, [profile])
+  }, [userName])
 
 
   useEffect(() => {
@@ -93,18 +95,26 @@ const ProfilePage = () => {
       <Header/>
       <main className="mypage">
         <div className="profile">
-          <form onSubmit={onSaveFile} name="profile_img" encType="multipart/form-data">
-            <input id="file" type="file" accept="image/*" onChange={handleFileChange} className="input_upload"/>
-            <label htmlFor="file" className="label_upload">
-              <div className="img_box">
-              {profile?.image
-                ? <img src={profile.image} alt="" className="info_img"/>
-                : <img src={preview === '' ? profileIcon : preview} alt="" className="info_img preview"/>
+          {profile?.name === currentProfile?.name
+            ? <form onSubmit={onSaveFile} name="profile_img" encType="multipart/form-data">
+              <input id="file" type="file" accept="image/*" onChange={handleFileChange} className="input_upload"/>
+              <label htmlFor="file" className="label_upload">
+                <div className="img_box">
+                  {profile?.image
+                    ? <img src={profile.image} alt="" className="info_img"/>
+                    : <img src={preview === '' ? profileIcon : preview} alt="" className="info_img preview"/>
+                  }
+                </div>
+              </label>
+              {preview !== '' && <button type="submit" className="btn profile_change">Save</button>}
+            </form>
+            : <div className="img_box">
+              {currentProfile?.image
+                ? <img src={currentProfile.image} alt="" className="info_img"/>
+                : <img src={profileIcon} alt="" className="info_img preview"/>
               }
-              </div>
-            </label>
-            {preview !== '' && <button type="submit" className="btn profile_change">Save</button>}
-          </form>
+            </div>
+          }
 
           <div className="profile_info">
             <span className="profile_name">{currentProfile?.name}</span>

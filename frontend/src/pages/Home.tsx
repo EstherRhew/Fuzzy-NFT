@@ -16,6 +16,11 @@ import _ from "lodash";
 
 const LIMIT = 5
 
+const observerOptions = {
+  root: null,
+  threshold: 1.0
+}
+
 const Home = () => {
   const [list, setList] = useRecoilState(listAtom)
   const [modal, setModal] = useRecoilState(modalAtom)
@@ -23,14 +28,9 @@ const Home = () => {
   const profile = useRecoilValue(profileAtom)
   const setAccount = useSetRecoilState(accountAtom)
   const loginToken = useRecoilValue(loginTokenAtom)
-  const [lastIndex, _setLastIndex] = useState(0)
-  const lastIndexRef = useRef(lastIndex)
-  const [fetching, setFetching] = useState(false)
-
-  const setLastIndex = (index: number) => {
-    lastIndexRef.current = index;
-    _setLastIndex(index)
-  }
+  const loadingRef = useRef<HTMLDivElement>(null)
+  const [pageIndex, setPageIndex] = useState(0)
+  const [allLoaded, setAllLoaded] = useState(false)
 
   const onClickAdd = async () => {
     const account = await connectWallet();
@@ -46,70 +46,70 @@ const Home = () => {
     setModal('AddForm')
   }
 
+  const checkAllLoaded = async () => {
+    const totalCount = await getTotalCount();
+    console.log(totalCount, list.length)
+    if (list.length == totalCount) {
+      setAllLoaded(true)
+    }
+  }
 
+  const handleObserver = async (entries: any) => {
+    const loadingSpinner = entries[0];
+    if (loadingSpinner.isIntersecting && !loading) {
+      setPageIndex(index => index + 1)
+    }
+  }
 
   const loadMoreItems = async () => {
-
-    const loadedMoreList = await getAllList(lastIndexRef.current)
+    setLoading(true)
+    console.log(pageIndex)
+    const loadedMoreList = await getAllList(pageIndex)
     setList(list => list.concat(loadedMoreList))
-    setLastIndex(lastIndexRef.current - LIMIT)
-
+    setLoading(false)
   }
 
-  const handleScroll = _.throttle(async () => {
-    console.log(lastIndexRef.current, 'llll')
-    if (lastIndexRef.current < (LIMIT - 1)) {
-      window.removeEventListener("scroll", handleScroll)
-    }
-    const scrollHeight =  document.documentElement.scrollHeight;
-    const scrollTop =  document.documentElement.scrollTop;
-    const clientHeight =  document.documentElement.clientHeight;
-    if (scrollTop + clientHeight >= scrollHeight && fetching === false) {
-      setFetching(true)
-      await loadMoreItems()
-      setFetching(false)
-    }
-  }, 1000)
+  useEffect(() => {
+    checkAllLoaded()
+  }, [list])
 
-  const getList = async (lastIndex: number) => {
-    const list = await getAllList(lastIndex)
-    setList(list)
-  }
+  useEffect(() => {
+    if (pageIndex === 0 || allLoaded) {
+      return;
+    }
+
+    loadMoreItems()
+  }, [pageIndex])
 
 
   useEffect(() => {
+    if (loginToken === '') {
+      return;
+    }
     setLoading(true)
-    getTotalCount()
-      .then((totalCount) => {
-        setLastIndex(totalCount - LIMIT)
-        getList(totalCount)
-        window.addEventListener("scroll", handleScroll)
-      })
-      .then(() => {
-        setLoading(false)
-      })
 
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    getAllList(0)
+      .then(setList)
+      .then(() => setLoading(false))
+  }, [loginToken])
 
-  // useEffect(() => {
-  //   if (loginToken === '') {
-  //     return;
-  //   }
-  //   setLoading(true)
-  //
-  //   console.log(lastIndex)
-  //   getAllList(lastIndex)
-  //     .then(setList)
-  //     .then(() => setLoading(false))
-  // }, [loginToken])
+  useEffect(() => {
+    console.log(allLoaded)
+    const observer = new IntersectionObserver(handleObserver, observerOptions)
+    if (loadingRef.current) observer.observe(loadingRef.current)
+
+    if (allLoaded) {
+      observer.disconnect()
+    }
+    return () => observer.disconnect()
+  }, [handleObserver])
 
   return (
     <>
       <Header/>
       <main className="home">
         <Button onClick={onClickAdd} text='Add' icon={addIcon}/>
-        <ListLayout list={list} loading={loading} />
+        <ListLayout list={list} loading={loading} ref={loadingRef} allLoaded={allLoaded}/>
         {modal === 'AddForm' && <Modal type='addForm'/>}
         {modal === 'Login' && <Modal type='login'/>}
       </main>
@@ -118,3 +118,44 @@ const Home = () => {
 };
 
 export default Home;
+
+
+// const loadMoreItems = async () => {
+//   const loadedMoreList = await getAllList(lastIndexRef.current)
+//   const updated = list.concat(loadedMoreList)
+//   console.log(list)
+//   console.log(updated)
+//   setList(list => list.concat(loadedMoreList))
+//   setLastIndex(lastIndexRef.current - LIMIT)
+// }
+
+// const handleScroll = _.debounce(async () => {
+//   // console.log(lastIndexRef.current, 'llll')
+//   if (lastIndexRef.current <= 0) {
+//     window.removeEventListener("scroll", handleScroll)
+//   }
+//   const scrollHeight = document.documentElement.scrollHeight;
+//   const scrollTop = document.documentElement.scrollTop;
+//   const clientHeight = document.documentElement.clientHeight;
+//   if (scrollTop + clientHeight >= scrollHeight && !loading) {
+//     setLoading(true)
+//     await loadMoreItems()
+//     setLoading(false)
+//   }
+// }, 1000)
+
+// useEffect(() => {
+//   // getTotalCount()
+//   //   .then((totalCount) => {
+//   //     setLastIndex(totalCount - LIMIT)
+//   //   })
+//
+//   window.addEventListener("scroll", handleScroll)
+//
+//   return () => window.removeEventListener("scroll", handleScroll)
+// }, [])
+
+// const setLastIndex = (index: number) => {
+//   lastIndexRef.current = index;
+//   _setLastIndex(index)
+// }

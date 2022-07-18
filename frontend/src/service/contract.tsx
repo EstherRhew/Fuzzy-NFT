@@ -11,7 +11,10 @@ export const getTotalCount = async () => {
   return await GalleryContract.methods.getTotalPhotoCount().call();
 }
 
-export const getAllList = async (lastIndex: number) => {
+export const getAllList = async (pageIndex: number) => {
+  const totalCount = await getTotalCount();
+  // let index = lastIndex || totalCount
+  const lastIndex = totalCount - (pageIndex * (LIMIT))
   const list: IUploadedItem[] = []
   if (lastIndex === 0) {
     return list

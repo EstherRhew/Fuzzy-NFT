@@ -45,8 +45,7 @@ const AddForm = () => {
     e.preventDefault()
     await uploadPhoto(newItem, account)
     setModal('');
-    const totalCount = await getTotalCount()
-    const list = await getAllList(totalCount);
+    const list = await getAllList(0);
     setList(list)
   }
 
