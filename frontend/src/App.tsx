@@ -12,6 +12,7 @@ import {Route, Routes} from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import {checkTokenValidity, getUserData} from "./service/user";
+import {klaytn} from "./klaytn/caver";
 
 function App() {
   const loginStatus = useRecoilValue(loginStatusAtom)
@@ -39,7 +40,13 @@ function App() {
 
   useEffect(() => {
     onUnlockAccount()
-    onAccountsChanged(setAccount)
+    // onAccountsChanged(setAccount)
+    klaytn.on('accountsChanged', (account: string) => {
+      setAccount(account[0])
+
+      console.log('account changed', account )
+    })
+
   }, [])
 
   useEffect(() => {

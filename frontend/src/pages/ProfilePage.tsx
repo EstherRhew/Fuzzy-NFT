@@ -11,6 +11,7 @@ import {modalAtom} from "../recoil/modal";
 import Modal from '../components/modal/Modal'
 import {IUploadedItem} from "../type/type";
 import {getUserData, getUserIdByName, uploadProfileImage} from "../service/user";
+import {accountAtom, connectWallet} from "../recoil/account";
 
 const ProfilePage = () => {
   const [myList, setMyList] = useRecoilState(myListAtom)
@@ -23,6 +24,7 @@ const ProfilePage = () => {
   const loginToken = useRecoilValue(loginTokenAtom)
   const [preview, setPreview] = useState('')
   const [file, setFile] = useState<any>()
+  const [account, setAccount] = useRecoilState(accountAtom)
 
   const getCurrentProfileData = async () => {
     if (!userName) {
@@ -75,6 +77,15 @@ const ProfilePage = () => {
     setPreview('')
   }
 
+  const onClickManageWallet = async () => {
+    const account = await connectWallet();
+    if (!account) {
+      return;
+    }
+    setAccount(account)
+    setModal('WalletManage')
+  }
+
   useEffect(() => {
     setLoading(true)
     getMyItems()
@@ -125,7 +136,7 @@ const ProfilePage = () => {
             <span className="profile_name">{currentProfile?.name}</span>
             {profile?.name === currentProfile?.name
               ? <div className="profile_wallet">
-                <button className="wallet_btn" onClick={() => setModal('WalletManage')}>지갑계정관리</button>
+                <button className="wallet_btn" onClick={onClickManageWallet}>지갑계정관리</button>
                 <span className="wallet_info">연결된 지갑
                 <span className="red"> ({currentProfile?.walletAddress.length})</span>
               </span>

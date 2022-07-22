@@ -5,6 +5,7 @@ import {loginTokenAtom, profileAtom} from "../../recoil/profile";
 import {addWalletAddress, deleteWalletAddress, getUserData, getUserIdByAddress} from "../../service/user";
 import closeIcon from "../../assets/image/xmark-solid.svg";
 import {modalAtom} from "../../recoil/modal";
+import {klaytn} from "../../klaytn/caver";
 
 const WalletManage = () => {
   const [account, setAccount] = useRecoilState(accountAtom)
@@ -72,7 +73,7 @@ const WalletManage = () => {
           <span></span>
         </li>
         {profile!.walletAddress.map((address) =>
-        <li className="wallet_item body" key="body">
+        <li className="wallet_item body" key={address}>
           <span>{address}</span>
           <button onClick={() => onClickDelete(address)} className="btn delete">삭제</button>
         </li>

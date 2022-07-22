@@ -30,8 +30,11 @@ export const setStorageLogin = () => {
 
 
 export const onAccountsChanged = (handler) => {
+  console.log('account changed')
   klaytn.on('accountsChanged', (account) => {
     handler(account[0])
+
+    console.log('account changed', account )
   })
 }
 
