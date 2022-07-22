@@ -48,7 +48,6 @@ const Home = () => {
 
   const checkAllLoaded = async () => {
     const totalCount = await getTotalCount();
-    console.log(totalCount, list.length)
     if (list.length == totalCount) {
       setAllLoaded(true)
     }
@@ -63,7 +62,6 @@ const Home = () => {
 
   const loadMoreItems = async () => {
     setLoading(true)
-    console.log(pageIndex)
     const loadedMoreList = await getAllList(pageIndex)
     setList(list => list.concat(loadedMoreList))
     setLoading(false)
@@ -94,7 +92,6 @@ const Home = () => {
   }, [loginToken])
 
   useEffect(() => {
-    console.log(allLoaded)
     const observer = new IntersectionObserver(handleObserver, observerOptions)
     if (loadingRef.current) observer.observe(loadingRef.current)
 

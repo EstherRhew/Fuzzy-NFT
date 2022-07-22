@@ -16,7 +16,7 @@ const ProfilePage = () => {
   const [myList, setMyList] = useRecoilState(myListAtom)
   const {userName} = useParams()
   const [loading, setLoading] = useState(false)
-  const profile = useRecoilValue(profileAtom)
+  const [profile, setProfile] = useRecoilState(profileAtom)
   const [modal, setModal] = useRecoilState(modalAtom)
   const navigate = useNavigate()
   const [currentProfile, setCurrentProfile] = useState<IProfile>()
@@ -66,7 +66,12 @@ const ProfilePage = () => {
     formData.append("profile_img", file);
     formData.append("user_id", profile.userId)
     const updatedUser = await uploadProfileImage(profile.userId, formData)
-    console.log(updatedUser.user, updatedUser.user.image)
+    if (updatedUser && currentProfile) {
+      setProfile({
+        ...profile,
+        image: URL.createObjectURL(file)
+      })
+    }
     setPreview('')
   }
 
@@ -100,7 +105,7 @@ const ProfilePage = () => {
               <input id="file" type="file" accept="image/*" onChange={handleFileChange} className="input_upload"/>
               <label htmlFor="file" className="label_upload">
                 <div className="img_box">
-                  {profile?.image
+                  {profile?.image && preview === ''
                     ? <img src={profile.image} alt="" className="info_img"/>
                     : <img src={preview === '' ? profileIcon : preview} alt="" className="info_img preview"/>
                   }

@@ -103,6 +103,15 @@ export const getUserIdByAddress = async (address: string) => {
   }
 }
 
+export const getUserIdByEmail = async (email: string) => {
+  try {
+    const {data} = await axios.get(`${config.USER_API_URL}/userIdByEmail/${email}`)
+    return data.userId
+  } catch (e) {
+    console.error(`getUserIdByEmail failed: ${e}`)
+  }
+}
+
 export const uploadProfileImage = async (userId: string, formData: any) => {
   try {
     const res = await axios.put(`${config.USER_API_URL}/uploadProfileImage`, formData)

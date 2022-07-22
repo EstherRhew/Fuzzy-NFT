@@ -1,18 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
-import {accountAtom, storageStatusAtom} from "../recoil/account";
+import React, {ChangeEvent, useState} from 'react';
+import {useRecoilState} from "recoil";
 import {loginStatusAtom, loginTokenAtom, profileAtom} from '../recoil/profile'
-import {modalAtom} from "../recoil/modal";
-import {getUserData, login, signup} from "../service/user";
+import {getUserData, getUserIdByEmail, getUserIdByName, login, signup} from "../service/user";
+import xMark from '../assets/image/xmark-solid-red.svg'
+import checkMark from '../assets/image/check-solid.svg'
+import {debounce} from "lodash";
 
 const DEFAULT_TAB = 'Login'
 type AuthTab = 'Login' | 'Signup'
 
 const LoginForm = () => {
-  const [account, setAccount] = useRecoilState(accountAtom)
-  const [storageStatus, setStorageStatus] = useRecoilState(storageStatusAtom)
-  const setModal = useSetRecoilState(modalAtom)
-  const loginStatus = useRecoilValue(loginStatusAtom)
   const [profile, setProfile] = useRecoilState(profileAtom)
   const [loginToken, setLoginToken] = useRecoilState(loginTokenAtom)
 
@@ -22,15 +19,20 @@ const LoginForm = () => {
   })
 
   const [signupForm, setSignupForm] = useState({
-    name:'',
+    name: '',
     email: '',
     password: '',
     password_confirm: ''
   })
 
+  const [validName, setValidName] = useState<boolean | null>(null)
+  const [validEmail, setValidEmail] = useState<boolean | null>(null)
+  const [validPassword, setValidPassword] = useState<boolean | null>(null)
+  const [passwordMatch, setPasswordMatch] = useState<boolean | null>(null)
+
   const [authTab, setAuthTab] = useState<AuthTab>(DEFAULT_TAB)
 
-  const onClickLogin = async (e?: any) => {
+  const onClickLogin = async (e: any) => {
     e.preventDefault()
     const {name, password} = loginForm
     const res = await login(name, password)
@@ -40,9 +42,7 @@ const LoginForm = () => {
     }
     const {data} = res
     localStorage.setItem('fuzzy', data.token)
-    console.log(data, 'login data')
     const userData = await getUserData(data._id)
-    console.log(data.token, 'login token')
     setLoginToken(data.token)
     setProfile(userData)
   }
@@ -57,7 +57,7 @@ const LoginForm = () => {
     }
     alert('signup successfully done!')
     setSignupForm({
-      name:'',
+      name: '',
       email: '',
       password: '',
       password_confirm: ''
@@ -77,17 +77,78 @@ const LoginForm = () => {
       })
       return
     }
+    if (e.target.value === '') {
+      setValidPassword(null)
+      setPasswordMatch(null)
+    }
     setSignupForm({
       ...signupForm,
       [e.target.id]: e.target.value
     })
   }
 
-  useEffect(() => {
-    console.log(profile, 'profile')
-  }, [profile])
+  const checkPasswordValid = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      setValidPassword(null)
+      return;
+    }
+    const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+    if (e.target.value.match(regex)) {
+      setValidPassword(true)
+      return;
+    }
+    setValidPassword(false)
+  }
 
-  switch (authTab){
+  const checkPasswordMatch = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      setPasswordMatch(null)
+      return;
+    }
+    if (e.target.value === signupForm.password) {
+      setPasswordMatch(true)
+      return
+    }
+    setPasswordMatch(false)
+  }
+
+  const checkValidName = debounce(async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      setValidName(null)
+      return;
+    }
+    if (e.target.value.length < 4) {
+      setValidName(false)
+      return
+    }
+    const existingUser = await getUserIdByName(e.target.value)
+    if (existingUser) {
+      setValidName(false)
+    } else {
+      setValidName(true)
+    }
+
+  }, 1000)
+
+  const checkValidEmail =  debounce(async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      setValidEmail(null)
+      return;
+    }
+    if (e.target.value.length < 4) {
+      setValidEmail(false)
+      return
+    }
+    const existingUser = await getUserIdByEmail(e.target.value)
+    if (existingUser) {
+      setValidEmail(false)
+    } else {
+      setValidEmail(true)
+    }
+
+  }, 1000)
+
+  switch (authTab) {
     case 'Login':
       return (
         <div className="auth_box">
@@ -99,7 +160,8 @@ const LoginForm = () => {
             </div>
             <div className="input_item">
               <label htmlFor="password">Password</label>
-              <input id="password" type="password" placeholder="Your password" value={loginForm.password} onChange={onChangeInput}/>
+              <input id="password" type="password" placeholder="Your password" value={loginForm.password}
+                     onChange={onChangeInput}/>
             </div>
             <button onClick={onClickLogin}>Login</button>
           </form>
@@ -116,19 +178,53 @@ const LoginForm = () => {
           <form action="src/components/LoginForm" className="auth_form">
             <div className="input_item">
               <label htmlFor="name">Name</label>
-              <input id="name" type="text" placeholder="Your name" value={signupForm.name} onChange={onChangeInput}/>
+              <input id="name" type="text" placeholder="Your name" value={signupForm.name} onChange={(e) => {
+                onChangeInput(e)
+                checkValidName(e)
+              }}/>
+              {validName === null
+                ? null
+                : validName
+                  ? <div className="input_valid"><img src={checkMark} alt=""/></div>
+                  : <div className="input_valid invalid"><img src={xMark} alt=""/></div>
+              }
             </div>
             <div className="input_item">
               <label htmlFor="email">Email</label>
-              <input id="email" type="email" placeholder="Your email" value={signupForm.email} onChange={onChangeInput}/>
+              <input id="email" type="email" placeholder="Your email" value={signupForm.email}
+                     onChange={(e) => {
+                       onChangeInput(e)
+                       checkValidEmail(e)
+                     }}/>
+              {validEmail === null
+                ? null
+                : validEmail
+                  ? <div className="input_valid"><img src={checkMark} alt=""/></div>
+                  : <div className="input_valid invalid"><img src={xMark} alt=""/></div>
+              }
             </div>
             <div className="input_item">
               <label htmlFor="password">Password</label>
-              <input id="password" type="password" placeholder="Your password" value={signupForm.password} onChange={onChangeInput}/>
+              <input id="password" type="password" placeholder="8 characters with uppercase, lowercase, and number" value={signupForm.password}
+                     onChange={onChangeInput} onBlur={checkPasswordValid}/>
+              {validPassword === null
+                ? null
+                : validPassword
+                  ? <div className="input_valid"><img src={checkMark} alt=""/></div>
+                  : <div className="input_valid invalid"><img src={xMark} alt=""/></div>
+              }
             </div>
             <div className="input_item">
               <label htmlFor="password_confirm">Confirm Password</label>
-              <input id="password_confirm" type="password" placeholder="Password confirm" value={signupForm.password_confirm} onChange={onChangeInput}/>
+              <input id="password_confirm" type="password" placeholder="Password confirm"
+                     value={signupForm.password_confirm}
+                     onChange={onChangeInput} onBlur={checkPasswordMatch}/>
+              {passwordMatch === null
+                ? null
+                : passwordMatch
+                  ? <div className="input_valid"><img src={checkMark} alt=""/></div>
+                  : <div className="input_valid invalid"><img src={xMark} alt=""/></div>
+              }
             </div>
             <button onClick={onClickJoin}>Join</button>
           </form>

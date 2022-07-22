@@ -143,6 +143,16 @@ exports.getUserIdByAddress = async (req, res) => {
   }
 }
 
+exports.getUserIdByEmail = async (req, res) => {
+  try {
+    const email = req.params.email
+    const userData = await User.findOne({email})
+    return res.status(200).json({userId: userData._id});
+  } catch (error) {
+    return res.status(500).json({code: '500', message: error.message});
+  }
+}
+
 exports.uploadProfileImage = async (req, res) => {
   try {
     const {user_id} = req.body

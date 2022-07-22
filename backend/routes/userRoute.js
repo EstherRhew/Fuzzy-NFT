@@ -1,5 +1,6 @@
 const express = require("express");
-const { signup, login, getUserData, verifyToken,getUserIdByAddress, getUserIdByName, uploadProfileImage
+const { signup, login, getUserData, verifyToken,getUserIdByAddress, getUserIdByName, uploadProfileImage,
+  getUserIdByEmail
 } = require("../controllers/userController");
 const {addWalletAddress, deleteWalletAddress} = require("../controllers/walletController");
 const {auth} = require("../middlewares/authMiddleware");
@@ -13,6 +14,7 @@ router.post("/deleteWalletAddress", auth, deleteWalletAddress)
 router.get("/user/:userId", getUserData)
 router.get("/userIdByName/:name", getUserIdByName);
 router.get("/userIdByAddress/:address", getUserIdByAddress);
+router.get("/userIdByEmail/:email", getUserIdByEmail)
 router.get("/verifyToken/:token", verifyToken)
 router.put("/uploadProfileImage", uploadFile.single("profile_img"), uploadProfileImage)
 

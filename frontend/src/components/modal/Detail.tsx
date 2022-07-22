@@ -8,7 +8,7 @@ import closeIcon from "../../assets/image/xmark-solid.svg";
 import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 import {modalAtom} from "../../recoil/modal";
 import transferIcon from "../../assets/image/arrow-right-arrow-left-solid.svg";
-import {loginTokenAtom, profileAtom} from "../../recoil/profile";
+import {IProfile, loginTokenAtom, profileAtom} from "../../recoil/profile";
 import {accountAtom} from "../../recoil/account";
 import {clickedAtom} from "../../recoil/clicked";
 import {getUserData, getUserIdByAddress} from "../../service/user";
@@ -23,13 +23,13 @@ const Detail = ({item}: {item?: IUploadedItem}) => {
   const profile = useRecoilValue(profileAtom);
   const account = useRecoilValue(accountAtom)
   const setClicked = useSetRecoilState(clickedAtom)
-  const [ownerProfile, setOwnerProfile] = useState()
+  const [ownerProfile, setOwnerProfile] = useState<IProfile>()
   const loginToken = useRecoilValue(loginTokenAtom)
 
   const getOwnerProfile = async () => {
     const userId = await getUserIdByAddress(currentOwner)
     const userData = await getUserData(userId)
-    setOwnerProfile(userData?.name)
+    userData && setOwnerProfile(userData)
   }
 
   const checkIsOwner = () => {
@@ -61,9 +61,9 @@ const Detail = ({item}: {item?: IUploadedItem}) => {
       <section className="detail_section info">
         <img src={closeIcon} alt="" className="close_icon" onClick={onCloseModal}/>
         <div className="detail_top">
-          <img src={profileIcon} alt="" className="info_img sample"/>
+          <img src={ownerProfile?.image ? ownerProfile.image : profileIcon} alt="" className={`info_img ${!ownerProfile?.image && 'sample'}`}/>
           <div className="detail_top_text">
-            <h4 className="owner">{ownerProfile}</h4>
+            <h4 className="owner">{ownerProfile?.name}</h4>
             <span className="location">at {firstLetterUppercase(location)}</span>
             <div className="buttons">
               {checkIsOwner()
